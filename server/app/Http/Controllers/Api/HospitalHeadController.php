@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\HospitalHeadResource;
 use App\Models\HospitalHead;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,91 +13,72 @@ use Illuminate\Support\Facades\Hash;
 class HospitalHeadController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return string
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function register(Request $request)
     {
+        $data = $request->validate([
+            'name' => 'required|unique:hospital_heads|max:255',
+            'password' => 'required',
+            'address' => 'required'
+        ]);
         $hospital_head = new HospitalHead();
-        $hospital_head->guid = uuid_create();
-        $hospital_head->key_identifier = $request->key_identifier;
+        $hospital_head->guid = uuid_create(UUID_TYPE_RANDOM);
         $hospital_head->name = $request->name;
-        $hospital_head->password = Hash::make($request->password);
+        $hospital_head->key_identifier = $request->key_identifier;
+        $hospital_head->password = $request->password;
         $hospital_head->address = $request->address;
         $hospital_head->save();
 
-        return 'hospital head saved successfully';
+        $token = $hospital_head->createToken('hospital_head_token')->plainTextToken;
+
+        return response()->json(['hospital_head' => $hospital_head,'token' => $token], 201);
     }
 
-    public function password_check(Request $request)
+    public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-        $hospital_head = HospitalHead::where('name', $request->name)->first();
-        $message = '';
-        if (Hash::check($request->password, $hospital_head->password)) {
-            $message = 'Authorization success';
-            return response($hospital_head, 201);
-        } else {
-            $message = 'Authorization failed';
-            return redirect()->route('login');
+        if (!auth()->attempt(['name' => $request->name, 'password' => $request->password])) {
+            return response()->json('error, cannot to login', 401);
         }
-//        return response()->json('error', 404);
+        $token = auth()->user()->createToken('hospital_head_token')->plainTextToken;
+
+        return response()->json(['token' => $token]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return JsonResponse
-     */
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json('logout', 200);
+    }
+
+    public function update(Request $request)
+    {
+        $hospital_head = HospitalHead::where('guid', $request->user()->guid)->first();
+        $hospital_head->name = $request->name;
+        $hospital_head->key_identifier = $request->key_identifier;
+        $hospital_head->password = $request->password;
+        $hospital_head->address = $request->address;
+        $hospital_head->save();
+
+        return response()->json($hospital_head, 200);
+    }
+
+    public function delete(Request $request)
+    {
+        $hospital_head = HospitalHead::where('guid', $request->user()->guid)->first();
+        $hospital_head->delete();
+
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json('deleted', 200);
+    }
+
     public function show()
     {
-        return response()->json('redirected to the show route', 201);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        $hospital_heads = HospitalHead::get();
+        return response()->json($hospital_heads, 200);
     }
 }
