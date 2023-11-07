@@ -10,8 +10,26 @@ class Hospital extends Model
 {
     use HasFactory;
 
+    /**
+     * @var mixed|string
+     */
+
+    protected $fillable = [
+        'guid',
+        'name',
+        'head_id',
+        'address',
+        'password',
+    ];
+
+    protected $hidden = [
+        'password',
+        'created_at',
+        'updated_at'
+    ];
+
     public function hospitalHead(): BelongsTo
     {
-        return $this->belongsTo(HospitalHead::class);
+        return $this->belongsTo(HospitalHead::class, 'head_id', 'guid');
     }
 }

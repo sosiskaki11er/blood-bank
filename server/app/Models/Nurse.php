@@ -6,11 +6,10 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use  Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class HospitalHead extends Model implements Authenticatable
+class Nurse extends Model
 {
     use HasFactory, Notifiable, HasApiTokens, AuthenticableTrait;
 
@@ -27,8 +26,13 @@ class HospitalHead extends Model implements Authenticatable
         'updated_at'
     ];
 
-    public function hospitals(): HasMany
+    public function hospital()
     {
-        return $this->hasMany(Hospital::class, 'head_id', 'guid');
+        return $this->belongsTo(Hospital::class, 'key_identifier', 'key_identifier');
+    }
+
+    public function bloodBanks()
+    {
+        return $this->hasMany(BloodBank::class, 'key_identifier', 'key_identifier');
     }
 }

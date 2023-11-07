@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('blood_banks', function (Blueprint $table) {
+        Schema::create('nurses', function (Blueprint $table) {
             $table->id();
             $table->uuid('guid');
-            $table->foreignUuid('hospital_id');
-            $table->string('blood_type');
-            $table->decimal('amount', 7, 2);
+            $table->string('key_identifier');
+            $table->string('name');
+            $table->string('password');
+            $table->string('address');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blood_banks');
+        Schema::dropIfExists('nurses');
     }
 };

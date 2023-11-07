@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+//Hospital Heads
 Route::get('hospital-head/show', [\App\Http\Controllers\Api\HospitalHeadController::class, 'show'])->name('show')->middleware('auth:sanctum');
 
 Route::post('hospital-head/register', [\App\Http\Controllers\Api\HospitalHeadController::class, 'register']);
@@ -31,7 +31,20 @@ Route::post('hospital-head/logout', [\App\Http\Controllers\Api\HospitalHeadContr
 
 Route::delete('hospital-head/delete', [\App\Http\Controllers\Api\HospitalHeadController::class, 'delete'])->middleware('auth:sanctum');
 
-Route::delete('hospital-head/show', [\App\Http\Controllers\Api\HospitalHeadController::class, 'show']);
+//Hospitals
+Route::post('hospital/create', [\App\Http\Controllers\Api\HospitalController::class, 'store']);
+
+// Blood-bank
+Route::post('blood-bank/create', [\App\Http\Controllers\Api\BloodBankController::class, 'store']);
+
+Route::get('blood-bank/showAll', [\App\Http\Controllers\Api\BloodBankController::class, 'index']);
+
+Route::get('blood-bank/show/{guid}', [\App\Http\Controllers\Api\BloodBankController::class, 'show']);
+
+Route::post('blood-bank/update/{guid}', [\App\Http\Controllers\Api\BloodBankController::class, 'update']);
+
+Route::delete('blood-bank/delete/{guid}', [\App\Http\Controllers\Api\BloodBankController::class, 'destroy']);
+
 
 Route::get('hospital-head', function (Request $request){
     return $request->user();

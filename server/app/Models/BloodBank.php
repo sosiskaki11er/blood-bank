@@ -10,6 +10,11 @@ class BloodBank extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'hospital_id',
+        'blood_type',
+        'amount',
+    ];
     public function hospitals(): HasOne
     {
         return $this->hasOne(Hospital::class);

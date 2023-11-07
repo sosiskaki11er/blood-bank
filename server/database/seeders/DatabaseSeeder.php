@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\BloodBank;
+use App\Models\Hospital;
+use App\Models\HospitalHead;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +17,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        HospitalHead::factory(4)->hasHospitals(2)->create();
+
+//        Hospital::factory(10)->create();
     }
 }

@@ -29,7 +29,7 @@ class HospitalHeadController extends Controller
         $hospital_head->guid = uuid_create(UUID_TYPE_RANDOM);
         $hospital_head->name = $request->name;
         $hospital_head->key_identifier = $request->key_identifier;
-        $hospital_head->password = $request->password;
+        $hospital_head->password = Hash::make($request->password);
         $hospital_head->address = $request->address;
         $hospital_head->save();
 
@@ -59,7 +59,7 @@ class HospitalHeadController extends Controller
         $hospital_head = HospitalHead::where('guid', $request->user()->guid)->first();
         $hospital_head->name = $request->name;
         $hospital_head->key_identifier = $request->key_identifier;
-        $hospital_head->password = $request->password;
+        $hospital_head->password = Hash::make($request->password);
         $hospital_head->address = $request->address;
         $hospital_head->save();
 
