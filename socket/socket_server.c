@@ -79,6 +79,13 @@ int main() {
 
         printf("User connected from %s:%d as type %c.\n", new_client.ip, new_client.port, new_client.client_type);
 
+        // Check if a back-end user is already connected
+        if (new_client.client_type == 'b' && b_user_socket != -1) {
+            printf("Another back-end user tried to connect. Rejecting the connection.\n");
+            close(new_socket);
+            continue;
+        }
+
         // Create a new thread for each client
         if (thread_index < MAX_CLIENTS) {
             client_info[thread_index] = new_client;
@@ -145,21 +152,14 @@ void *handle_client(void *arg) {
     printf("Client %s:%d (%c) disconnected.\n", client_info->ip, client_info->port, client_info->client_type);
     close(client_socket);
 
-    if (client_info->client_type == 'b') {
-        // If a back-end user disconnects, reset the b_user_socket
-        pthread_mutex_lock(&mutex);
-        if (b_user_socket == client_socket) {
-            b_user_socket = -1;
-        }
-        pthread_mutex_unlock(&mutex);
-    } else if (client_info->client_type == 'f') {
-        // If a front-end user disconnects, reset the f_user_socket
-        pthread_mutex_lock(&mutex);
-        if (f_user_socket == client_socket) {
-            f_user_socket = -1;
-        }
-        pthread_mutex_unlock(&mutex);
+    // Update the global socket variables when a client disconnects
+    pthread_mutex_lock(&mutex);
+    if (client_info->client_type == 'b' && b_user_socket == client_socket) {
+        b_user_socket = -1;
+    } else if (client_info->client_type == 'f' && f_user_socket == client_socket) {
+        f_user_socket = -1;
     }
+    pthread_mutex_unlock(&mutex);
 
     pthread_exit(NULL);
 }
