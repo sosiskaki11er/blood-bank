@@ -22,6 +22,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print(f"Invalid data format: {decoded_data}")
 
         # Send a reply to the front end user
-        reply = input("Enter a message to send to the server: ")
+        reply = f'back : {message}'
         s.sendall(reply.encode())
 
