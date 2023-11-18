@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        HospitalHead::factory(4)->hasHospitals(2)->create();
+        HospitalHead::factory(2)->hasHospitals(2)->create();
 
 //        Hospital::factory(10)->create();
     }

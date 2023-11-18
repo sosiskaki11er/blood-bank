@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hospital;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class HospitalController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $hospitals = Hospital::all();
         return response()->json([
@@ -18,7 +19,7 @@ class HospitalController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required',
@@ -38,10 +39,10 @@ class HospitalController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $hospital
-        ]);
+        ], 201);
     }
 
-    public function show(Request $request)
+    public function show(Request $request): JsonResponse
     {
         $hospital = Hospital::where('guid', $request->guid)->first();
         return response()->json([
@@ -50,7 +51,7 @@ class HospitalController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
         $hospital = Hospital::where('guid', $request->guid)->first();
         if ($request->name)
@@ -69,7 +70,7 @@ class HospitalController extends Controller
         ]);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request): JsonResponse
     {
         $hospital = Hospital::where('guid', $request->guid)->first();
         $hospital->delete();
