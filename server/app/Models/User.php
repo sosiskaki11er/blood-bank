@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -31,6 +32,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'remember_token',
     ];
 
     /**
@@ -42,8 +44,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function hospital(): BelongsTo
+    public function hospitalHeads(): HasOne
     {
-        return $this->belongsTo(Hospital::class, 'hospital_id', 'guid');
+        return $this->hasOne(HospitalHead::class);
+    }
+
+    public function nurses(): HasOne
+    {
+        return $this->hasOne(Nurse::class);
+    }
+
+    public function labs(): HasOne
+    {
+        return $this->hasOne(Lab::class);
     }
 }

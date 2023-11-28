@@ -17,9 +17,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('guid');
             $table->string('name');
-            $table->foreignUuid('head_id');
             $table->string('address');
-            $table->string('password');
             $table->timestamps();
         });
     }

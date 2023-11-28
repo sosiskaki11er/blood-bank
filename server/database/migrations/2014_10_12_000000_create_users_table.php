@@ -17,10 +17,11 @@ return new class extends Migration
             $table->id();
             $table->uuid('guid');
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->uuid('hospital_id');
             $table->timestamps();
+
+            // Columns for morphOne relationship
+            $table->uuid('profile_id')->nullable();
+            $table->string('profile_type')->nullable();
         });
     }
 

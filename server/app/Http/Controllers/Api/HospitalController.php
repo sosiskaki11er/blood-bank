@@ -7,6 +7,7 @@ use App\Models\Hospital;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class HospitalController extends Controller
 {
@@ -21,25 +22,17 @@ class HospitalController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required',
-            'head_id' => 'required',
             'address' => 'required',
-            'password' => 'required',
         ]);
-
-        $hospital = new Hospital();
-        $hospital->guid = uuid_create(UUID_TYPE_RANDOM);
-        $hospital->name = $request->name;
-        $hospital->head_id = $request->head_id;
-        $hospital->address = $request->address;
-        $hospital->password = Hash::make($request->password);
-        $hospital->save();
+        $data['guid'] = Str::uuid();
+        $hospital = Hospital::create($data);
 
         return response()->json([
             'status' => 'success',
             'data' => $hospital
-        ], 201);
+        ]);
     }
 
     public function show(Request $request): JsonResponse

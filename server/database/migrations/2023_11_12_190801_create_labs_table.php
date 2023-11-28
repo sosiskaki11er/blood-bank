@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('labs', function (Blueprint $table) {
             $table->id();
             $table->uuid('guid');
-            $table->string('hospital_head_guid');
+            $table->string('hospital_id');
             $table->string('name');
             $table->string('password');
             $table->string('address');

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Hospital extends Model
 {
@@ -17,19 +18,16 @@ class Hospital extends Model
     protected $fillable = [
         'guid',
         'name',
-        'head_id',
         'address',
-        'password',
     ];
 
     protected $hidden = [
-        'password',
         'created_at',
         'updated_at'
     ];
 
-    public function hospitalHead(): BelongsTo
+    public function doctors(): HasMany
     {
-        return $this->belongsTo(HospitalHead::class, 'head_id', 'guid');
+        return $this->hasMany(Doctor::class, 'hospital_guid', 'guid');
     }
 }

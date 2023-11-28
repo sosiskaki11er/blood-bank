@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -14,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('hospital_heads', function (Blueprint $table) {
+        Schema::create('staff', function (Blueprint $table) {
             $table->id();
             $table->uuid('guid');
-            $table->string('key_identifier');
-            $table->string('name');
-            $table->string('password');
-            $table->string('address');
+            $table->string('name')->nullable();
+            $table->string('surname')->nullable();
+
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hospital_heads');
+        Schema::dropIfExists('staff');
     }
 };
