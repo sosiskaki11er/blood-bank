@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'admin',
         'passwords' => 'users',
     ],
 
@@ -40,6 +40,31 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'doctor' => [
+            'driver' => 'sanctum',
+            'provider' => 'doctor',
+        ],
+
+        'donor' => [
+            'driver' => 'sanctum',
+            'provider' => 'donor',
+        ],
+
+        'staff' => [
+            'driver' => 'sanctum',
+            'provider' => 'staff',
+        ],
+
+        'patient' => [
+            'driver' => 'sanctum',
+            'provider' => 'patient',
+        ],
+
+        'admin' => [
+            'driver' => 'sanctum',
+            'provider' => 'admin',
+        ],
     ],
 
     /*
@@ -62,7 +87,32 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Doctor::class,
+            'model' => \App\Models\User::class,
+        ],
+
+        'doctor' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Doctor::class,
+        ],
+
+        'donor' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Donor::class,
+        ],
+
+        'staff' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Staff::class,
+        ],
+
+        'patient' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Patient::class,
+        ],
+
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Admin::class,
         ],
 
 //         'users' => [

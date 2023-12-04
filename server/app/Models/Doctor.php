@@ -46,6 +46,7 @@ class Doctor extends Model
 
         static::creating(function ($model) {
             $model->guid = (string) Str::uuid();
+            $model->assignRole('doctor');
         });
     }
 

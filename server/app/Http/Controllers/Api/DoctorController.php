@@ -52,8 +52,6 @@ class DoctorController extends Controller
 
         $doctor = Doctor::create($data);
 
-        $doctor->assignRole('doctor');
-
         return response()->json([
             'status' => 'success',
             'data' => $doctor
@@ -103,6 +101,16 @@ class DoctorController extends Controller
         ]);
     }
 
+    public function logout(): JsonResponse
+    {
+        auth()->user()->tokens()->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logged out'
+        ]);
+    }
+
     public function update($guid): JsonResponse
     {
         $data = request()->validate([
@@ -140,13 +148,19 @@ class DoctorController extends Controller
         ]);
     }
 
-    public function logout(): JsonResponse
+    public function showDonors($guid): JsonResponse
     {
-        auth()->user()->tokens()->delete();
+        $doctor = Doctor::where('guid', $guid)->first();
+
+        $donors = $doctor->donors;
+
+        $donors = DoctorForDonorResource::collection($donors);
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Logged out'
+            'data' => $donors
         ]);
     }
+
+
 }

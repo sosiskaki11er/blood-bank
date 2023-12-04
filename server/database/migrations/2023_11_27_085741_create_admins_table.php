@@ -18,7 +18,8 @@ return new class extends Migration
             $table->uuid('guid');
             $table->string('name');
             $table->string('surname');
-
+            $table->string('phone')->nullable();
+            $table->string('password')->nullable();
             $table->timestamps();
         });
     }

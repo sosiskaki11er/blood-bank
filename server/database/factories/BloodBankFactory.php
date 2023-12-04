@@ -18,9 +18,10 @@ class BloodBankFactory extends Factory
     {
         return [
             'guid' => $this->faker->uuid,
-            'hospital_id' => $this->faker->uuid,
-            'blood_group' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']),
-            'amount' => $this->faker->randomFloat(2, 0, 100),
+            'hospital_guid' => Hospital::factory(),
+            'blood_type' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
+            'amount' => $this->faker->numberBetween(0, 100),
+            'price' => $this->faker->numberBetween(0, 1000),
         ];
     }
 }

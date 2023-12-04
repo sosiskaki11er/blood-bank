@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,6 +26,7 @@ class DoctorFactory extends Factory
             'email' => $this->faker->email,
             'password' => '$2y$10$/L536tnUlvFOfKLLt6LhhODyQlXcbbjyVLGqqUQNQkSpkRBd7FDcO',
             'description' => $this->faker->text,
+            'hospital_guid' => $this->hospital->guid,
             'birth' => $this->faker->date(),
         ];
     }

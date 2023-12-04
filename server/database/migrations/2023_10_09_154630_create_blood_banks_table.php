@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('blood_banks', function (Blueprint $table) {
             $table->id();
             $table->uuid('guid');
-            $table->foreignUuid('hospital_id');
-            $table->string('blood_type');
-            $table->decimal('amount', 7, 2);
+            $table->uuid('hospital_guid')->nullable();
+            $table->string('blood_type')->nullable();
+            $table->decimal('amount', 12, 3)->default(0);
+            $table->decimal('price', 12, 2)->default(0);
             $table->timestamps();
         });
     }

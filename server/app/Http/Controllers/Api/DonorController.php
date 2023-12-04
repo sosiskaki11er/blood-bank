@@ -7,6 +7,7 @@ use App\Http\Resources\SingleDonorResource;
 use App\Models\Donor;
 use App\Models\HospitalHead;
 use App\Models\Nurse;
+use App\Models\Transfusion;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -40,8 +41,6 @@ class DonorController extends Controller
 
         $donor = Donor::create($data);
 
-        $donor->assignRole('donor');
-        
         return response()->json([
             'status' => 'success',
             'data' => $donor
@@ -88,6 +87,17 @@ class DonorController extends Controller
             'status' => 'success',
             'data' => $donor,
             'token' => $token
+        ]);
+    }
+
+
+    public function logout(): JsonResponse
+    {
+        auth()->user()->tokens()->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Donor logged out'
         ]);
     }
 
@@ -149,16 +159,6 @@ class DonorController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Donor deleted'
-        ]);
-    }
-
-    public function logout(): JsonResponse
-    {
-        auth()->user()->tokens()->delete();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Donor logged out'
         ]);
     }
 }

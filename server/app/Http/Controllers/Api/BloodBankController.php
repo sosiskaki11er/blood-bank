@@ -17,26 +17,6 @@ class BloodBankController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'hospital_id' => 'required',
-            'blood_type' => 'required',
-            'amount' => 'required',
-        ]);
-        $bloodBank = new BloodBank();
-        $bloodBank->guid = uuid_create(UUID_TYPE_RANDOM);
-        $bloodBank->hospital_id = $request->hospital_id;
-        $bloodBank->blood_type = $request->blood_type;
-        $bloodBank->amount = $request->amount;
-        $bloodBank->save();
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $bloodBank
-        ]);
-    }
-
     public function show(Request $request)
     {
         $bloodBank = BloodBank::where('guid', $request->guid)->first();

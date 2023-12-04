@@ -18,13 +18,15 @@ return new class extends Migration
             $table->uuid('guid');
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
+            $table->string('password')->nullable();
             $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->string('address')->nullable();
-            $table->string('special_comment')->nullable();
             $table->string('blood_type')->nullable();
             $table->string('blood_rh')->nullable();
             $table->string('blood_disease')->nullable();
             $table->string('blood_status')->nullable();
+            $table->uuid('doctor_guid')->nullable();
             $table->date('birth')->nullable();
             $table->timestamps();
         });
