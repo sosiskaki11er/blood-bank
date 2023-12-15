@@ -114,14 +114,15 @@ class DoctorController extends Controller
     public function update($guid): JsonResponse
     {
         $data = request()->validate([
-            'name' => 'required',
-            'surname' => 'required',
-            'phone' => 'required',
-            'address' => 'required',
-            'email' => 'required',
-            'description' => 'required',
-            'hospital_id' => 'required',
-            'birth' => 'required',
+            'name' => 'nullable',
+            'surname' => 'nullable',
+            'phone' => 'nullable',
+            'address' => 'nullable',
+            'email' => 'nullable',
+            'description' => 'nullable',
+            'password' => 'nullable',
+            'hospital_id' => 'nullable',
+            'birth' => 'nullable',
         ]);
 
         $doctor = Doctor::where('guid', $guid)->first();
@@ -140,7 +141,13 @@ class DoctorController extends Controller
 
         $doctor->delete();
 
-        auth()->user()->tokens()->delete();
+        if (!$doctor) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Doctor not found'
+            ], 404);
+        }
+//        auth()->user()->tokens()->delete();
 
         return response()->json([
             'status' => 'success',

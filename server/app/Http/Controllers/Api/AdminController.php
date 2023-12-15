@@ -4,11 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Doctor;
+use App\Models\Donor;
+use App\Models\Patient;
+use App\Models\Staff;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use PhpParser\Comment\Doc;
 
 class AdminController extends Controller
 {
@@ -46,7 +51,7 @@ class AdminController extends Controller
 
     public function doctorsIndex(): JsonResponse
     {
-        $doctors = Admin::all();
+        $doctors = Doctor::all();
 
         return response()->json([
             'status' => 'success',
@@ -56,12 +61,23 @@ class AdminController extends Controller
 
     public function doctorShow($guid): JsonResponse
     {
-        $doctor = Admin::where('guid', $guid)->first();
+        $doctor = Doctor::where('guid', $guid)->first();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $doctor
-        ]);
+        if ($doctor)
+        {
+            return response()->json([
+                'status' => 'success',
+                'data' => $doctor
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Doctor not found'
+            ], 404);
+        }
+
     }
 
 public function doctorUpdate($guid): JsonResponse
@@ -73,44 +89,177 @@ public function doctorUpdate($guid): JsonResponse
             'password' => 'nullable',
         ]);
 
-        $doctor = Admin::where('guid', $guid)->first();
-        $doctor->update($data);
+        $doctor = Doctor::where('guid', $guid)->first();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $doctor
-        ]);
+        if ($doctor)
+        {
+            $doctor->update($data);
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $doctor
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Doctor not found'
+            ], 404);
+        }
     }
 
     public function doctorDelete($guid): JsonResponse
     {
-        $doctor = Admin::where('guid', $guid)->first();
-        $doctor->delete();
+        $doctor = Doctor::where('guid', $guid)->first();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $doctor
-        ]);
+        if ($doctor)
+        {
+            $doctor->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $doctor
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Doctor not found'
+            ], 404);
+        }
     }
 
-    public function patientIndex(): JsonResponse
+    public function staffIndex(): JsonResponse
     {
-        $patients = Admin::all();
+        $staff = Staff::all();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $patients
+        if ($staff)
+        {
+            return response()->json([
+                'status' => 'success',
+                'data' => $staff
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Staff not found'
+            ], 404);
+        }
+    }
+
+    public function staffShow($guid): JsonResponse
+    {
+        $staff = Staff::where('guid', $guid)->first();
+
+        if ($staff)
+        {
+            return response()->json([
+                'status' => 'success',
+                'data' => $staff
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Staff not found'
+            ], 404);
+        }
+    }
+
+    public function staffUpdate($guid): JsonResponse
+    {
+        $data = request()->validate([
+            'name' => 'nullable',
+            'surname' => 'nullable',
+            'phone' => 'nullable',
+            'password' => 'nullable',
         ]);
+
+        $staff = Staff::where('guid', $guid)->first();
+
+        if ($staff)
+        {
+            $staff->update($data);
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $staff
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Staff not found'
+            ], 404);
+        }
+    }
+
+    public function staffDelete($guid): JsonResponse
+    {
+        $staff = Staff::where('guid', $guid)->first();
+
+        if ($staff)
+        {
+            $staff->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $staff
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Staff not found'
+            ], 404);
+        }
+    }
+
+    public function patientsIndex(): JsonResponse
+    {
+        $patients = Patient::all();
+
+        if ($patients)
+        {
+            return response()->json([
+                'status' => 'success',
+                'data' => $patients
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Patients not found'
+            ], 404);
+        }
     }
 
     public function patientShow($guid): JsonResponse
     {
-        $patient = Admin::where('guid', $guid)->first();
+        $patient = Patient::where('guid', $guid)->first();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $patient
-        ]);
+        if ($patient)
+        {
+            return response()->json([
+                'status' => 'success',
+                'data' => $patient
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Patient not found'
+            ], 404);
+        }
     }
 
     public function patientUpdate($guid): JsonResponse
@@ -122,44 +271,86 @@ public function doctorUpdate($guid): JsonResponse
             'password' => 'nullable',
         ]);
 
-        $patient = Admin::where('guid', $guid)->first();
-        $patient->update($data);
+        $patient = Patient::where('guid', $guid)->first();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $patient
-        ]);
+        if ($patient)
+        {
+            $patient->update($data);
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $patient
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Patient not found'
+            ], 404);
+        }
     }
 
     public function patientDelete($guid): JsonResponse
     {
-        $patient = Admin::where('guid', $guid)->first();
-        $patient->delete();
+        $patient = Patient::where('guid', $guid)->first();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $patient
-        ]);
+        if ($patient)
+        {
+            $patient->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $patient
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Patient not found'
+            ], 404);
+        }
     }
 
-    public function donorIndex(): JsonResponse
+    public function donorsIndex(): JsonResponse
     {
-        $donors = Admin::all();
+        $donors = Donor::all();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $donors
-        ]);
+        if ($donors)
+        {
+            return response()->json([
+                'status' => 'success',
+                'data' => $donors
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Donors not found'
+            ], 404);
+        }
     }
 
     public function donorShow($guid): JsonResponse
     {
-        $donor = Admin::where('guid', $guid)->first();
+        $donor = Donor::where('guid', $guid)->first();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $donor
-        ]);
+        if ($donor)
+        {
+            return response()->json([
+                'status' => 'success',
+                'data' => $donor
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Donor not found'
+            ], 404);
+        }
     }
 
     public function donorUpdate($guid): JsonResponse
@@ -171,23 +362,45 @@ public function doctorUpdate($guid): JsonResponse
             'password' => 'nullable',
         ]);
 
-        $donor = Admin::where('guid', $guid)->first();
-        $donor->update($data);
+        $donor = Donor::where('guid', $guid)->first();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $donor
-        ]);
+        if ($donor)
+        {
+            $donor->update($data);
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $donor
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Donor not found'
+            ], 404);
+        }
     }
 
     public function donorDelete($guid): JsonResponse
     {
         $donor = Admin::where('guid', $guid)->first();
-        $donor->delete();
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $donor
-        ]);
+        if ($donor)
+        {
+            $donor->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $donor
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Donor not found'
+            ], 404);
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BloodBanksResource;
 use App\Models\BloodBank;
 use Illuminate\Http\Request;
 
@@ -11,6 +12,7 @@ class BloodBankController extends Controller
     public function index()
     {
         $bloodBanks = BloodBank::all();
+        $bloodBanks = new BloodBanksResource($bloodBanks);
         return response()->json([
             'status' => 'success',
             'data' => $bloodBanks

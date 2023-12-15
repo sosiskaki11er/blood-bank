@@ -6,6 +6,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
@@ -51,5 +52,10 @@ class Patient extends Model
     public function doctors(): BelongsTo
     {
         return $this->belongsTo(Doctor::class);
+    }
+
+    public function transfusions(): HasMany
+    {
+        return $this->hasMany(Transfusion::class, 'patient_guid', 'guid');
     }
 }

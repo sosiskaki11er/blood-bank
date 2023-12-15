@@ -59,4 +59,9 @@ class Doctor extends Model
     {
         return $this->hasMany(Donor::class, 'doctor_guid', 'guid');
     }
+
+    public function infusions(): HasMany
+    {
+        return $this->hasMany(Infusion::class, 'doctor_guid', 'guid');
+    }
 }

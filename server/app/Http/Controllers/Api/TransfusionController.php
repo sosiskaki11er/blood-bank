@@ -61,4 +61,6 @@ class TransfusionController extends Controller
             'data' => BloodBank::where('hospital_guid', $transfusion->hospital_guid)->where('blood_type', $transfusion->donor->blood_type . $transfusion->donor->blood_rh)->first()
         ]);
     }
+
+
 }

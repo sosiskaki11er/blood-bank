@@ -150,7 +150,7 @@ class DonorController extends Controller
         ]);
     }
 
-    public function delete($guid): JsonResponse
+    public function destroy($guid): JsonResponse
     {
         $donor = Donor::where('guid', $guid)->first();
 
