@@ -1,0 +1,437 @@
+@tailwind base;
+@tailwind utilities;
+
+html { font-size: 10px; }
+
+h1{
+  @apply
+  text-2xl
+  font-bold
+}
+
+h2{
+  @apply
+  text-xl
+  font-medium
+  leading-[32px]
+}
+
+h3{
+  @apply
+  text-lg
+  font-medium
+}
+
+h4{
+  @apply
+  text-xs
+  text-grey-700
+  font-medium
+}
+
+input[type="text"],input[type="password"]{
+  @apply
+  text-sm
+  px-[16px]
+  py-[12px]
+  rounded-[8px]
+  border-[1px]
+  border-grey-500
+}
+
+
+.input-header{
+  @apply
+  ml-[8px]
+}
+
+button {
+  @apply
+  rounded-[8px]
+  py-[12px]
+  border-[2px]
+  border-red-600
+  text-base
+  font-medium
+  text-white
+  bg-red-600
+  hover:bg-white
+  hover:text-red-600
+  transition-all
+  duration-300
+}
+
+input{
+  @apply
+  cursor-pointer
+}
+
+select{
+  @apply
+  cursor-pointer
+}
+
+button.secondary{
+  @apply
+  text-red-600
+  bg-white
+  hover:bg-red-600
+  hover:text-white
+}
+
+button.tertiary{
+  @apply
+  bg-white
+  border-grey-500
+  text-black
+  py-[12px]
+  px-[20px]
+}
+
+button:hover > div > img{
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(240deg) brightness(105%) contrast(103%);
+}
+
+.container{
+  @apply
+  flex
+}
+
+.role-tab{
+  @apply
+  px-[30px]
+  py-[10px]
+  text-lg
+  font-medium
+  rounded-[500px]
+  text-red-600
+  border-[2px]
+  rounded-[500px]
+  border-red-600
+  text-center
+  cursor-pointer
+}
+
+.role-tab.active{
+  @apply
+  bg-red-600
+  text-white
+}
+
+select{
+  @apply
+  px-[16px]
+  py-[12px]
+  rounded-[8px]
+  bg-white
+  border-grey-500
+  border-[1px]
+  flex
+  flex-grow-[1]
+  h-[48px]
+  text-sm
+  font-medium
+}
+
+.sidebar{
+  @apply
+  min-w-[325px]
+  w-[325px]
+  max-w-[325px]
+  p-[40px]
+  flex
+  flex-col
+  flex-grow-[1]
+  gap-[80px]
+  justify-center
+  mb-auto
+}
+
+.page-tab{
+  @apply
+  flex
+  gap-[12px]
+  py-[16px]
+  px-[24px]
+  rounded-[8px]
+  cursor-pointer
+  transition-all
+  duration-300
+}
+
+.page-tab:hover{
+  @apply
+  border-[2px]
+  border-red-600
+  text-red-600
+}
+
+.page-tab:hover > img {
+  filter: invert(18%) sepia(98%) saturate(2513%) hue-rotate(336deg) brightness(94%) contrast(97%);
+}
+
+.page-tab > img {
+  filter: invert(0%) sepia(100%) saturate(29%) hue-rotate(51deg) brightness(109%) contrast(106%);
+}
+
+.page-tab.active{
+  @apply
+  bg-red-600
+  text-white
+}
+
+.page-tab.active > img {
+  filter: invert(100%) sepia(1%) saturate(2313%) hue-rotate(285deg) brightness(116%) contrast(100%);
+}
+
+.subpage{
+  @apply
+  flex
+  flex-col
+  gap-[40px]
+  pl-[20px]
+  pt-[40px]
+  pb-[80px]
+  pr-[40px]
+  flex-grow-[1]
+  max-w-[955px]
+}
+
+.banner{
+  @apply
+  px-[40px]
+  py-[68px]
+  rounded-[8px]
+  relative
+  bg-[#F2F2F2]
+}
+
+.banner-bg{
+  @apply
+  absolute
+  right-[0px]
+  top-[0px]
+}
+
+.component{
+  @apply
+  flex
+  flex-col
+  gap-[24px]
+}
+
+.card{
+  box-shadow: 0px 4px 40px 0px rgba(36, 36, 36, 0.05);
+  @apply
+  px-[40px]
+  py-[32px]
+  rounded-[8px]
+  flex
+  max-w-[438px]
+  flex-grow-[1]
+}
+
+.indicator{
+  @apply
+  rounded-[500px]
+  w-[8px]
+  h-[8px]
+  my-auto
+}
+
+.indicator.approve{
+  @apply
+  bg-green
+}
+
+.add-tab{
+  @apply
+  flex
+  flex-grow-[1]
+  justify-center
+  gap-[16px]
+  rounded-[8px]
+  border-[2px]
+  border-red-100
+  text-red-600
+  cursor-pointer
+}
+
+.add-tab > img{
+  @apply
+  my-auto
+}
+
+.add-tab > h3 {
+  @apply
+  my-auto
+}
+
+.diseases{
+  width: 105px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table{
+  @apply
+  flex
+  flex-col
+  gap-[16px]
+}
+
+.table-header{
+  @apply
+  flex
+  gap-[20px]
+  px-[16px]
+  py-[12px]
+  bg-grey-400
+  rounded-[12px]
+}
+
+.table-row{
+  @apply
+  flex
+  gap-[20px]
+  px-[16px]
+  py-[12px]
+}
+
+.table-row > div > h4{
+  @apply
+  text-base
+}
+
+.table-header > div{
+  @apply
+  flex
+  gap-[8px]
+  py-[8px]
+}
+
+.table-header > div > img{
+  @apply
+  my-auto
+}
+
+.table-header > div > h4{
+  @apply
+  text-base
+  my-auto
+}
+
+.see-more{
+  @apply
+  border-grey-500
+  bg-white
+  text-black
+  hover:text-black
+}
+
+input[type=date],input[type=time]{
+  @apply
+  text-sm
+  font-medium
+  px-[16px]
+  py-[12px]
+  border-[1px]
+  border-grey-500
+  rounded-[8px]
+}
+
+.notification{
+  @apply
+  flex
+  px-[24px]
+  py-[16px]
+  gap-[20px]
+  rounded-[12px]
+}
+
+.notification.new{
+  @apply
+  bg-grey-400
+}
+
+.notification > h3{
+  @apply
+  text-base
+}
+
+.modal-bg{
+  @apply
+  fixed
+  flex
+  justify-center
+  w-[100%]
+  h-[100%]
+  bg-black/50
+}
+
+.modal {
+  @apply
+  my-auto
+  mx-auto
+  bg-white
+  py-[40px]
+  px-[48px]
+  rounded-[12px]
+  flex
+  flex-col
+  justify-center
+  gap-[32px]
+}
+
+.modal > * {
+  @apply
+  mx-auto
+}
+
+.blood{
+  @apply
+  bg-red-100
+  flex
+  flex-col 
+  justify-center
+  gap-[16px]
+  py-[20px]
+  w-[217px]
+  rounded-[8px]
+  text-red-600
+}
+
+.blood > *{
+  @apply
+  mx-auto
+}
+
+.blood-amount{
+  @apply
+  py-[8px]
+  border-[2px]
+  border-red-600
+  rounded-[8px]
+  w-[96px]
+  text-center
+}
+
+.action{
+  box-shadow: 0px 4px 40px 0px rgba(36, 36, 36, 0.05);
+  @apply
+  flex
+  gap-[12px]
+  px-[40px]
+  py-[20px]
+  border-[2px]
+  rounded-[8px]
+  border-white
+  w-[438px]
+  cursor-pointer
+}
+
+.action.active{
+  @apply
+  border-red-600
+}
