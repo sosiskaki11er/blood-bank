@@ -28,24 +28,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //Hospitals
-Route::post('hospital/create', [HospitalController::class, 'store'])->middleware('auth:sanctum', 'role:admin');
+Route::post('hospital/create', [HospitalController::class, 'create'])->middleware('auth:sanctum', 'role:admin');
 
-Route::get('hospital/showAll', [HospitalController::class, 'index'])->middleware('auth:sanctum', 'role:admin');
+Route::get('hospital/showAll', [HospitalController::class, 'index']);
 
 Route::get('hospital/show/{guid}', [HospitalController::class, 'show'])->middleware('auth:sanctum', 'role:admin');
 
 Route::post('hospital/update/{guid}', [HospitalController::class, 'update'])->middleware('auth:sanctum', 'role:admin');
 
 Route::delete('hospital/delete/{guid}', [HospitalController::class, 'destroy'])->middleware('auth:sanctum', 'role:admin');
-
-// Blood-bank
-Route::get('blood-bank/showAll', [BloodBankController::class, 'index'])->middleware('auth:sanctum', 'role:admin');
-
-Route::get('blood-bank/show/{guid}', [BloodBankController::class, 'show'])->middleware('auth:sanctum', 'role:admin');
-
-Route::post('blood-bank/update/{guid}', [BloodBankController::class, 'update'])->middleware('auth:sanctum', 'role:admin');
-
-Route::delete('blood-bank/delete/{guid}', [BloodBankController::class, 'destroy'])->middleware('auth:sanctum', 'role:admin');
 
 //Donors
 Route::get('donor/showAll', [DonorController::class, 'index'])->middleware('auth:sanctum', 'role:donor');
@@ -56,19 +47,15 @@ Route::post('donor/register', [DonorController::class, 'register']);
 
 Route::post('donor/addBloodType/{guid}', [DonorController::class, 'addBloodType'])->middleware('auth:sanctum', 'role:donor');
 
-Route::post('donor/doctorsRecommendation/{guid}', [DonorController::class, 'doctorRecommendation'])->middleware('auth:sanctum', 'role:donor');
-
 Route::post('donor/login', [DonorController::class, 'login']);
 
 Route::post('donor/logout', [DonorController::class, 'logout'])->middleware('auth:sanctum', 'role:donor');
 
 Route::put('donor/update/{guid}', [DonorController::class, 'update'])->middleware('auth:sanctum', 'role:donor');
 
+Route::get('donor/transfusion/show', [TransfusionController::class, 'donorIndex'])->middleware('auth:sanctum', 'role:donor');
+
 Route::post('donor/transfusion/create', [TransfusionController::class, 'create'])->middleware('auth:sanctum', 'role:donor');
-
-Route::get('donor/infusion/create', [InfusionController::class, 'create'])->middleware('auth:sanctum', 'role:donor');
-
-Route::get('donor/infusion/show', [InfusionController::class, 'show'])->middleware('auth:sanctum', 'role:donor');
 
 Route::delete('donor/delete/{guid}', [DonorController::class, 'destroy'])->middleware('auth:sanctum', 'role:donor');
 
@@ -87,9 +74,11 @@ Route::post('patient/logout', [PatientController::class, 'logout'])->middleware(
 
 Route::put('patient/update/{guid}', [PatientController::class, 'update'])->middleware('auth:sanctum', 'role:patient');
 
-Route::get('patient/infusion/show', [InfusionController::class, 'show'])->middleware('auth:sanctum', 'role:patient');
+Route::get('patient/infusion/index', [InfusionController::class, 'patientIndex'])->middleware('auth:sanctum', 'role:patient');
 
-Route::put('donor/infusion/update/{guid}', [InfusionController::class, 'update'])->middleware('auth:sanctum', 'role:donor');
+Route::get('patient/infusion/show/{guid}', [InfusionController::class, 'show'])->middleware('auth:sanctum', 'role:patient');
+
+Route::put('patient/infusion/update/{guid}', [InfusionController::class, 'update'])->middleware('auth:sanctum', 'role:donor');
 
 Route::delete('patient/delete/{guid}', [PatientController::class, 'destroy'])->middleware('auth:sanctum', 'role:patient');
 
@@ -100,13 +89,17 @@ Route::get('doctor/show/{guid}', [DoctorController::class, 'show'])->middleware(
 
 Route::post('doctor/register', [DoctorController::class, 'register']);
 
-Route::put('doctor/addHospital/{guid}', [DoctorController::class, 'addHospital'])->middleware('auth:sanctum', 'role:doctor');
-
 Route::post('doctor/login', [DoctorController::class, 'login']);
 
 Route::post('doctor/logout', [DoctorController::class, 'logout'])->middleware('auth:sanctum', 'role:doctor');
 
 Route::put('doctor/update/{guid}', [DoctorController::class, 'update'])->middleware('auth:sanctum', 'role:doctor');
+
+Route::get('doctor/infusion/index', [InfusionController::class, 'index'])->middleware('auth:sanctum', 'role:doctor');
+
+Route::get('doctor/infusion/show/{guid}', [InfusionController::class, 'show'])->middleware('auth:sanctum', 'role:doctor');
+
+Route::post('doctor/infusion/create', [InfusionController::class, 'create'])->middleware('auth:sanctum', 'role:doctor');
 
 Route::delete('doctor/delete/{guid}', [DoctorController::class, 'destroy'])->middleware('auth:sanctum', 'role:doctor');
 
@@ -125,7 +118,9 @@ Route::put('staff/update/{guid}', [StaffController::class, 'update'])->middlewar
 
 Route::delete('staff/delete/{guid}', [StaffController::class, 'destroy'])->middleware('auth:sanctum', 'role:staff');
 
-Route::get('staff/transfusionShow', [TransfusionController::class, 'transfusionShow'])->middleware('auth:sanctum', 'role:staff');
+Route::get('staff/transfusionsIndex', [TransfusionController::class, 'index'])->middleware('auth:sanctum', 'role:staff');
+
+Route::get('staff/transfusionShow/{guid}', [TransfusionController::class, 'show'])->middleware('auth:sanctum', 'role:staff');
 
 Route::put('staff/bloodTransfusion/{guid}', [TransfusionController::class, 'setStatus'])->middleware('auth:sanctum', 'role:staff');
 
@@ -162,6 +157,6 @@ Route::get('admin/donorsIndex', [DonorController::class, 'index'])->middleware('
 
 Route::get('admin/donorShow/{guid}', [DonorController::class, 'show'])->middleware('auth:sanctum', 'role:admin');
 
-Route::put('admin/donorUpdate/{guid}', [DonorController::class, 'update'])->middleware('auth:sanctum', 'role:admin');
+Route::put('admin/donorUpdate/{guid}', [DonorController::class, 'adminUpdate'])->middleware('auth:sanctum', 'role:admin');
 
 Route::delete('admin/donorDelete/{guid}', [DonorController::class, 'destroy'])->middleware('auth:sanctum', 'role:admin');

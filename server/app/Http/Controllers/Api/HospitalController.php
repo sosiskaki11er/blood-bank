@@ -21,21 +21,6 @@ class HospitalController extends Controller
         ]);
     }
 
-    public function store(Request $request): JsonResponse
-    {
-        $data = $request->validate([
-            'name' => 'required',
-            'address' => 'required',
-        ]);
-        $data['guid'] = Str::uuid();
-        $hospital = Hospital::create($data);
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $hospital
-        ]);
-    }
-
     public function show(Request $request): JsonResponse
     {
         $hospital = Hospital::where('guid', $request->guid)->first();
@@ -45,18 +30,32 @@ class HospitalController extends Controller
         ]);
     }
 
+    public function create(Request $request): JsonResponse
+    {
+        $data = request()->validate([
+            'name' => 'required',
+            'address' => 'required',
+        ]);
+
+        $hospital = Hospital::create($data);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $hospital
+        ]);
+    }
+
     public function update(Request $request): JsonResponse
     {
+        $data = request()->validate([
+            'name' => 'nullable',
+            'phone'=> 'nullable',
+            'address' => 'nullable',
+            'email' => 'nullable',
+        ]);
+
         $hospital = Hospital::where('guid', $request->guid)->first();
-        if ($request->name)
-            $hospital->name = $request->name;
-        if ($request->head_id)
-            $hospital->head_id = $request->head_id;
-        if ($request->address)
-            $hospital->address = $request->address;
-        if ($request->password)
-            $hospital->password = $request->password;
-        $hospital->save();
+        $hospital->update($data);
 
         return response()->json([
             'status' => 'success',

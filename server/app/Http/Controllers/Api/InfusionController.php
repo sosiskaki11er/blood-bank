@@ -10,9 +10,19 @@ use Illuminate\Http\Request;
 
 class InfusionController extends Controller
 {
+    public function patientIndex(): JsonResponse
+    {
+        $infusions = Infusion::where('patient_guid', auth()->user()->guid)->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $infusions
+        ]);
+    }
+
     public function index(): JsonResponse
     {
-        $infusions = Infusion::all();
+        $infusions = Infusion::where('doctor_guid', auth()->user()->guid)->get();
 
         return response()->json([
             'status' => 'success',
@@ -33,8 +43,6 @@ class InfusionController extends Controller
     public function create(): JsonResponse
     {
         $data = request()->validate([
-            'name' => 'required|max:255',
-            'description' => 'required',
             'amount' => 'required',
             'patient_guid' => 'required',
         ]);
@@ -50,10 +58,13 @@ class InfusionController extends Controller
     public function update($guid): JsonResponse
     {
         $data = request()->validate([
-            'date' => 'required',
-            'time' => 'required',
-            'hospital_guid' => 'required',
+            'date' => 'nullable|date',
+            'time' => 'nullable|date_format:H:i:s',
+            'hospital_guid' => 'nullable',
+            'doctor_guid' => 'nullable',
         ]);
+
+        $infusion = Infusion::where('guid', $guid)->first();
 
         $bloodBank = BloodBank::where('hospital_guid', $infusion->hospital_guid)->where('blood_type', $infusion->donor->blood_type . $infusion->donor->blood_rh)->first();
         if ($bloodBank->amount - $infusion->amount < 0)

@@ -65,14 +65,14 @@ class DonorController extends Controller
         ]);
     }
 
-    public function login()
+    public function login(Request $request)
     {
-        $data = request()->validate([
-            'email' => 'required',
-            'password' => 'required',
+        $data = $request->validate([
+            'phone' => 'required|string',
+            'password' => 'required|string',
         ]);
 
-        $donor = Donor::where('email', $data['email'])->first();
+        $donor = Donor::where('phone', $data['phone'])->first();
 
         if (!$donor || !Hash::check($data['password'], $donor->password)) {
             return response()->json([
@@ -101,22 +101,6 @@ class DonorController extends Controller
         ]);
     }
 
-    public function doctorRecommendation($guid): JsonResponse
-    {
-        $data = request()->validate([
-            'doctor_guid' => 'required',
-            'doctors_comment' => 'nullable',
-        ]);
-        $donor = Donor::where('guid', $guid)->first();
-        $donor->update($data);
-
-        $donor = new SingleDonorResource($donor);
-        return response()->json([
-            'status' => 'success',
-            'data' => $donor
-        ]);
-    }
-
     public function show($guid): JsonResponse
     {
         $donor = Donor::where('guid', $guid)->first();
@@ -138,6 +122,32 @@ class DonorController extends Controller
             'email' => 'nullable',
             'password' => 'nullable',
             'birth' => 'nullable',
+        ]);
+
+        $donor = Donor::where('guid', $guid)->first();
+
+        $donor->update($data);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $donor
+        ]);
+    }
+
+    public function adminUpdate($guid): JsonResponse
+    {
+        $data = request()->validate([
+            'name' => 'nullable',
+            'surname' => 'nullable',
+            'phone' => 'nullable',
+            'address' => 'nullable',
+            'email' => 'nullable',
+            'password' => 'nullable',
+            'birth' => 'nullable',
+            'blood_type' => 'nullable',
+            'blood_rh' => 'nullable',
+            'blood_disease' => 'nullable',
+            'amount_of_money' => 'nullable',
         ]);
 
         $donor = Donor::where('guid', $guid)->first();

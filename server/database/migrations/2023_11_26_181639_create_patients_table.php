@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('blood_type')->nullable();
             $table->string('blood_rh')->nullable();
             $table->string('blood_disease')->nullable();
-            $table->string('blood_status')->nullable();
             $table->uuid('doctor_guid')->nullable();
             $table->date('birth')->nullable();
             $table->timestamps();

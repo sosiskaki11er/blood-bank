@@ -14,15 +14,21 @@ class StaffController extends Controller
 {
     public function index()
     {
+        $staff = Staff::all();
+
         return response()->json([
-            'message' => 'Staff index'
+            'status' => 'success',
+            'staff' => $staff
         ]);
     }
 
     public function show($guid)
     {
+        $staff = Staff::where('guid', $guid)->first();
+
         return response()->json([
-            'message' => 'Staff show'
+            'status' => 'success',
+            'staff' => $staff
         ]);
     }
 
@@ -35,7 +41,6 @@ class StaffController extends Controller
             'address' => 'required|string',
             'email' => 'required|email|unique:staff',
             'password' => 'required|string',
-            'description' => 'required|string',
             'birth' => 'required|date',
         ]);
         $data['password'] = bcrypt($data['password']);
@@ -44,7 +49,7 @@ class StaffController extends Controller
         $staff = Staff::create($data);
 
         return response()->json([
-            'message' => 'Staff created',
+            'status' => 'success',
             'staff' => $staff
         ]);
     }
@@ -67,7 +72,7 @@ class StaffController extends Controller
         $token = $staff->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'message' => 'Staff logged in',
+            'status' => 'success',
             'token' => $token
         ]);
     }
@@ -84,14 +89,14 @@ class StaffController extends Controller
     public function update(Request $request, $guid)
     {
         $data = $request->validate([
-            'name' => 'string',
-            'surname' => 'string',
-            'phone' => 'string',
-            'address' => 'string',
-            'email' => 'email|unique:staff',
-            'password' => 'string',
-            'description' => 'string',
-            'birth' => 'date',
+            'name' => 'nullable|string',
+            'surname' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
+            'email' => 'nullable|email',
+            'password' => 'nullable|string',
+            'hospital_guid' => 'nullable|uuid',
+            'birth' => 'nullable|date',
         ]);
 
         $staff = Staff::where('guid', $guid)->first();
@@ -99,7 +104,7 @@ class StaffController extends Controller
         $staff->update($data);
 
         return response()->json([
-            'message' => 'Staff updated',
+            'status' => 'success',
             'staff' => $staff
         ]);
     }

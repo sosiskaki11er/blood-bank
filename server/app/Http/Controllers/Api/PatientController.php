@@ -7,6 +7,7 @@ use App\Http\Resources\SinglePatientResource;
 use App\Models\Patient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PatientController extends Controller
 {
@@ -54,22 +55,24 @@ class PatientController extends Controller
     public function login(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'email' => 'required|email',
+            'phone' => 'required',
             'password' => 'required|string',
         ]);
 
-        if (!auth()->attempt($data)) {
+        $patient = Patient::where('phone', $data['phone'])->first();
+
+        if (!$patient || !Hash::check($data['password'], $patient->password)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid credentials'
             ], 401);
         }
 
-        $accessToken = auth()->user()->createToken('authToken')->accessToken;
+        $token = $patient->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'status' => 'success',
-            'access_token' => $accessToken
+            'token' => $token
         ]);
     }
 
@@ -102,14 +105,17 @@ class PatientController extends Controller
 public function update($guid): JsonResponse
     {
         $data = request()->validate([
-            'name' => 'required|string',
-            'surname' => 'required|string',
-            'phone' => 'required|string',
-            'address' => 'required|string',
-            'email' => 'required|email',
-            'password' => 'required|string',
-            'description' => 'required|string',
-            'birth' => 'required|date',
+            'name' => 'nullable|string',
+            'surname' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
+            'email' => 'nullable|email',
+            'password' => 'nullable|string',
+            'birth' => 'nullable|date',
+            'blood_type' => 'nullable|string',
+            'blood_rh' => 'nullable|string',
+            'blood_disease' => 'nullable|string',
+            'doctor_guid' => 'nullable|uuid',
         ]);
 
         $patient = Patient::where('guid', $guid)->first();

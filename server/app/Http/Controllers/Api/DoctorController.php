@@ -119,7 +119,6 @@ class DoctorController extends Controller
             'phone' => 'nullable',
             'address' => 'nullable',
             'email' => 'nullable',
-            'description' => 'nullable',
             'password' => 'nullable',
             'hospital_id' => 'nullable',
             'birth' => 'nullable',

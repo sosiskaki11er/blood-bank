@@ -63,7 +63,6 @@ class DatabaseSeeder extends Seeder
             'surname' => 'Donor',
             'phone' => '123456789',
             'password' => Hash::make('password'),
-            'doctor_guid' => $doctor->guid,
             'blood_type' => 'A',
             'blood_rh' => '+',
         ]);

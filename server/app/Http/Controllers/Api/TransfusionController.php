@@ -10,10 +10,27 @@ use Illuminate\Http\Request;
 
 class TransfusionController extends Controller
 {
-    public function show(): JsonResponse
+    public function donorIndex()
     {
-        //transfusion with sam hospital guid
-        $transfusion = Transfusion::where('hospital_guid', auth()->user()->hospital_guid)->get();
+        $transfusions = Transfusion::where('donor_guid', auth()->user()->guid)->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $transfusions
+        ]);
+    }
+    public function index(Request $request)
+    {
+        $transfusions = Transfusion::where('hospital_guid', $request->hospital_guid)->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $transfusions
+        ]);
+    }
+    public function show($guid): JsonResponse
+    {
+        $transfusion = Transfusion::where('guid', $guid)->first();
 
         return response()->json([
             'status' => 'success',
@@ -44,6 +61,7 @@ class TransfusionController extends Controller
     {
         $data = request()->validate([
             'status' => 'required|in:0,1,2',
+            'amount' => 'required:max:0.450',
         ]);
 
         $transfusion = Transfusion::where('guid', $guid)->first();
@@ -52,7 +70,7 @@ class TransfusionController extends Controller
 
         if ($transfusion->status == 1) {
             $bloodBank = BloodBank::where('hospital_guid', $transfusion->hospital_guid)->where('blood_type', $transfusion->donor->blood_type . $transfusion->donor->blood_rh)->first();
-            $bloodBank->amount = $bloodBank->amount + 0.450;
+            $bloodBank->amount = $bloodBank->amount + $data['amount'];
             $bloodBank->save();
         }
 

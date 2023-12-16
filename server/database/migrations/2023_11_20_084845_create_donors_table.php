@@ -22,12 +22,9 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('email')->nullable();
             $table->string('password')->nullable();
-            $table->uuid('doctor_guid')->nullable();
-            $table->string('doctors_comment')->nullable();
             $table->string('blood_type')->nullable();
             $table->string('blood_rh')->nullable();
             $table->string('blood_disease')->nullable();
-            $table->string('blood_status')->nullable();
             $table->decimal('amount_of_money')->nullable();
             $table->date('birth')->nullable();
             $table->timestamps();
