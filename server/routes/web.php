@@ -1,5 +1,14 @@
 <?php
 
+use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\BloodBankController;
+use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\Api\DonorController;
+use App\Http\Controllers\Api\HospitalController;
+use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\StaffController;
+use App\Http\Controllers\Api\TransfusionController;
+use App\Http\Controllers\InfusionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +23,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return 'test';
+})->name('test');

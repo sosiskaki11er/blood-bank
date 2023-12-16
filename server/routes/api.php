@@ -158,7 +158,7 @@ Route::put('admin/patientUpdate/{guid}', [PatientController::class, 'update'])->
 
 Route::delete('admin/patientDelete/{guid}', [PatientController::class, 'destroy'])->middleware('auth:sanctum', 'role:admin');
 
-Route::get('admin/donorsIndex', [DonorController::class, 'index'])->middleware('auth:sanctum', 'role:admin');
+Route::get('admin/donorsIndex', [DonorController::class, 'index'])->middleware('auth:sanctum', 'role:admin')->name('admin.donors.index');
 
 Route::get('admin/donorShow/{guid}', [DonorController::class, 'show'])->middleware('auth:sanctum', 'role:admin');
 
