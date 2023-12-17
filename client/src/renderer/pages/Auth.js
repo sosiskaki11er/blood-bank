@@ -1,5 +1,5 @@
 import {useNavigate} from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BloodImg from '../assets/img/svg.png'
 import HeartLogo from '../assets/icons/activity-heart.svg'
 import { Socket } from '..'
@@ -18,13 +18,26 @@ function Auth() {
     const [date, setDate] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
-    const [bloodType, setBloodType] = useState('')
-    const [rhesus,setRhesus] = useState('')
-    const [donationType,setDonationType] = useState('')
+    const [bloodType, setBloodType] = useState('A')
+    const [rhesus,setRhesus] = useState('+')
     const [diseases, setDiseases] = useState('')
     const [doctorName, setDoctorName] = useState('')
     const [doctorID, setDoctorID] = useState('')
+    const [hospitals, setHospitals] = useState([])
+    const [hospital, setHospital] = useState()
+    const [doctors, setDoctors] = useState([])
+    const [doctor, setDoctor] = useState()
     const navigate = useNavigate()
+
+    useEffect(()=> {
+        Socket.request("GET","hospital","showAll","").then(data => {setHospitals(data.data);setHospital(data.data[0].guid)})
+    },[])
+
+    useEffect(() => {
+        setTimeout(() => {
+            Socket.request("GET","doctor","index","").then(data => {setDoctors(data.data);setDoctor(data.data[0].guid)})
+        },1000)
+    },[])
 
     const HandleLogin = () => {
         if(phone && password){
@@ -53,9 +66,26 @@ function Auth() {
     const HandleSignUp = () => {
         switch(role){
             case "donor":
-                if(bloodType && rhesus && diseases && donationType){
-                    Socket.request("POST",role,"register",``)
+                if(bloodType && rhesus && diseases){
+                    Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date.replaceAll("-",".")}&blood_type=${bloodType}&blood_rh=${rhesus}&blood_disease=${diseases}`)
                 }
+                break;
+            case "patient":
+                if(doctor && bloodType && rhesus && diseases){
+                    Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date.replaceAll("-",".")}&blood_type=${bloodType}&blood_rh=${rhesus}&blood_disease=${diseases}&doctor_guid=${doctor}`)
+                }
+                break;
+            case "doctor":
+                if(hospital){
+                    Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date.replaceAll("-",".")}&hospital_guid=${hospital}`)
+                }
+                break;
+            case "staff":
+                if(hospital){
+                    Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date.replaceAll("-",".")}&hospital_guid=${hospital}`)
+                }
+                break;
+            
         }
     }
 
@@ -85,10 +115,6 @@ function Auth() {
 
     const HandleRole = (role) => {
         setRole(role)
-    }
-
-    const HandleDonationType = (type) => {
-        setDonationType(type)
     }
 
     const HandleRhesus = (type) => {
@@ -234,31 +260,24 @@ function Auth() {
                 <div className='flex gap-[12px] justify-between'>
                     <div className='container flex-col max-w-[195px] flex-grow-[1]'>
                         <h4 className='input-header'>Blood type</h4>
-                        <select onChange={(e) => HandleBloodType(e.target.value)}>
-                            <option>A</option>
-                            <option>B</option>
-                            <option>O</option>
-                            <option>AB</option>
+                        <select onChange={(e) => HandleBloodType(e.target.value)} value={bloodType}>
+                            <option value={"A"}>A</option>
+                            <option value={"B"}>B</option>
+                            <option value={"O"}>O</option>
+                            <option value={"AB"}>AB</option>
                         </select>
                     </div>
                     <div className='container flex-col max-w-[195px] flex-grow-[1]'>
                         <h4 className='input-header'>Rhesus</h4>
-                        <select onChange={(e) => HandleRhesus(e.target.value)}>
-                            <option>+</option>
-                            <option>-</option>
+                        <select onChange={(e) => HandleRhesus(e.target.value)} value={rhesus}>
+                            <option value={"+"}>+</option>
+                            <option value={"-"}>-</option>
                         </select>
                     </div>
                 </div>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Diseases</h4>
                     <input type='text' onChange={(e) => HandleDiseases(e.target.value)}/>
-                </div>
-                <div className='container flex-col gap-[16px]'>
-                    <h4 className='input-header'>Choose donation type:</h4>
-                    <div className="container gap-[8px] flex-wrap">
-                        <div className={donationType === "Charity" ? "role-tab active w-[196px]" : "role-tab w-[196px]"} onClick={(e) => HandleDonationType('Charity')}>Charity</div>
-                        <div className={donationType === "Paid" ? "role-tab active w-[196px]" : "role-tab w-[196px]"} onClick={(e) => HandleDonationType('Paid')}>Paid</div>
-                    </div>
                 </div>
                 <button onClick={() => {HandleSignUp()}}>Continue</button>
             </div>
@@ -267,15 +286,13 @@ function Auth() {
         {
             signedUp && (role === 'patient') &&
             <div className='container flex-col gap-[16px]'>
-                <div className='flex gap-[12px]'>
-                    <div className='container flex-col max-w-[195px]'>
-                        <h4 className='input-header'>Doctor’s name</h4>
-                        <input type='text' onChange={(e) => HandleDoctorName(e.target.value)}/>
-                    </div>
-                    <div className='container flex-col max-w-[195px]'>
-                        <h4 className='input-header'>Doctor’s ID</h4>
-                        <input type='text' onChange={(e) => HandleDoctorID(e.target.value)}/>
-                    </div>
+                <div className='container flex-col'>
+                    <h4 className='input-header'>Select your doctor</h4>
+                    <select type='text' onChange={(e) => setDoctor(e.target.value)} value={doctor}>
+                        {
+                            doctors.map(doctor => <option key={doctor.guid} value={doctor.guid}>{`${doctor.name} ${doctor.surname}`}</option>)
+                        }
+                    </select>
                 </div>
                 <div className='flex gap-[12px] justify-between'>
                     <div className='container flex-col max-w-[195px]'>
@@ -299,7 +316,7 @@ function Auth() {
                     <h4 className='input-header'>Diseases</h4>
                     <input type='text' onChange={(e) => HandleDiseases(e.target.value)}/>
                 </div>
-                <button onClick={() => {navigate(`/main/?page=home&role=${role}`)}}>Continue</button>
+                <button onClick={() => {HandleSignUp()}}>Continue</button>
             </div>
         }
 
@@ -308,11 +325,13 @@ function Auth() {
             <div className='container flex-col gap-[16px]'>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Select your hospital</h4>
-                    <select type='text' onChange={(e) => HandleDiseases(e.target.value)}>
-                        <option>DoctorMim</option>
+                    <select type='text' onChange={(e) => setHospital(e.target.value)} value={hospital}>
+                        {
+                            hospitals.map(hospital => <option key={hospital.guid} value={hospital.guid}>{hospital.name}</option>)
+                        }
                     </select>
                 </div>
-                <button onClick={() => {navigate(`/main/?page=home&role=${role}`)}}>Continue</button>
+                <button onClick={() => HandleSignUp()}>Continue</button>
             </div>
         }
       </div>

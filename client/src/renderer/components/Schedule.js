@@ -16,7 +16,7 @@ function Schedule({role}) {
       <Appointments role={role}/>
       {
         (role === 'patient' || role === 'donor') &&
-                <div className='component max-w-[684px]'>
+        <div className='component max-w-[684px]'>
             <h3>Schedule appointment</h3>
             <div className='container flex-col gap-[24px]'>
                     <div className='flex gap-[20px]'>

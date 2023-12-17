@@ -9,9 +9,6 @@ const PORT = 8080;
 export const Socket = new TcpClient(HOST,PORT)
 Socket.connect()
 Socket.send("f")
-//Socket.request("POST","admin","login","phone=123456789&password=password").then(data => console.log(data))
-
-
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
