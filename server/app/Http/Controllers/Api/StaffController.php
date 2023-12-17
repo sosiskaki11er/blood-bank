@@ -42,7 +42,7 @@ class StaffController extends Controller
             'email' => 'required|email|unique:staff',
             'password' => 'required|string',
             'hospital_guid' => 'required|uuid',
-            'birth' => 'required|date',
+            'birth' => 'required',
         ]);
         $data['password'] = bcrypt($data['password']);
 

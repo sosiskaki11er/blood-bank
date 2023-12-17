@@ -44,7 +44,7 @@ class PatientController extends Controller
             'blood_rh' => 'nullable|string',
             'blood_disease' => 'nullable|string',
             'doctor_guid' => 'nullable|uuid',
-            'birth' => 'required|date',
+            'birth' => 'required',
         ]);
         $data['password'] = bcrypt($data['password']);
 
