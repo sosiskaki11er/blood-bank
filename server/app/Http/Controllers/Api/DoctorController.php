@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DoctorForDonorResource;
+use App\Http\Resources\DoctorsResource;
 use App\Http\Resources\SingleDoctorResource;
 use App\Models\Doctor;
 use Illuminate\Http\JsonResponse;
@@ -16,6 +17,18 @@ class DoctorController extends Controller
     public function index(): JsonResponse
     {
         $doctors = Doctor::all();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $doctors
+        ]);
+    }
+
+    public function showAll(): JsonResponse
+    {
+        $doctors = Doctor::all();
+
+        $doctors = DoctorsResource::collection($doctors);
 
         return response()->json([
             'status' => 'success',

@@ -85,6 +85,8 @@ Route::delete('patient/delete/{guid}', [PatientController::class, 'destroy'])->m
 //Doctors
 Route::get('doctor/showAll', [DoctorController::class, 'index'])->middleware('auth:sanctum', 'role:doctor');
 
+Route::get('doctor/index', [DoctorController::class, 'showAll']);
+
 Route::get('doctor/show/{guid}', [DoctorController::class, 'show'])->middleware('auth:sanctum', 'role:doctor');
 
 Route::post('doctor/register', [DoctorController::class, 'register']);
