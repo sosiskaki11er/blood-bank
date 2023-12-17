@@ -15,7 +15,7 @@ function Schedule({role}) {
     <div className='subpage'>
       <Appointments role={role}/>
       {
-        (role === 'patient' || role === 'Donor') &&
+        (role === 'patient' || role === 'donor') &&
                 <div className='component max-w-[684px]'>
             <h3>Schedule appointment</h3>
             <div className='container flex-col gap-[24px]'>
@@ -47,7 +47,7 @@ function Schedule({role}) {
                         }
                     </div>
                         {
-                            (role === 'Donor') &&
+                            (role === 'donor') &&
                             <div className='container flex-col gap-[16px]'>
                                 <h4 className='input-header'>Choose donation type:</h4>
                                 <div className="container gap-[8px] flex-wrap">

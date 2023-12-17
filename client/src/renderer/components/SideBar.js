@@ -14,13 +14,13 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
       <div className='container flex-col gap-[48px]'>
         <div className='container flex-col gap-[16px]'>
           {
-            role === 'Donor' && <h2>Hello, Donor!</h2>
+            role === 'donor' && <h2>Hello, Donor!</h2>
           }
           {
             role === 'patient' && <h2>Hi, Patient!</h2>
           }
           {
-            role === 'Doctor' && <h2>Howdy, Doctor!</h2>
+            role === 'doctor' && <h2>Howdy, Doctor!</h2>
           }
           {
             role === 'staff' && <h2>Welcome, Staff!</h2>
@@ -40,7 +40,7 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
           </div>
 
           {
-            (role === 'Donor') &&
+            (role === 'donor') &&
             <div 
             className={subpage === 'donation' ? 'page-tab active': 'page-tab'}
             onClick={() => handleSubpage('donation')}
@@ -62,7 +62,7 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
           }
 
           {
-            (role === 'Doctor' || role === 'staff') &&
+            (role === 'doctor' || role === 'staff') &&
             <div 
             className={subpage === 'schedule' ? 'page-tab active': 'page-tab'}
             onClick={() => handleSubpage('schedule')}
@@ -73,7 +73,7 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
           }
 
           {
-            (role === 'Doctor' || role === 'staff') &&
+            (role === 'doctor' || role === 'staff') &&
             <div 
             className={(subpage === 'prescriptions' || subpage === 'edit-prescription') ? 'page-tab active': 'page-tab'}
             onClick={() => handleSubpage('prescriptions')}

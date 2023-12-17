@@ -14,9 +14,9 @@ function Home({subpage, handleSubpage,role}) {
         {(role === 'staff' || role === 'admin') && <BloodAvailable/>}
         {(role !== 'admin') && <Appointments handleSubpage={handleSubpage} role={role} subpage={subpage}/>}
         {(role === 'patient') && <Medinfo handleSubpage={handleSubpage}/>}
-        {(role === 'Doctor' || role==='staff') && <Requests handleSubpage={handleSubpage}/>}
-        {(role === 'Doctor') && <BloodAvailable/>}
-        {(role === 'patient' || role === 'Donor') && <History/>}
+        {(role === 'doctor' || role==='staff') && <Requests handleSubpage={handleSubpage}/>}
+        {(role === 'doctor') && <BloodAvailable/>}
+        {(role === 'patient' || role === 'donor') && <History/>}
         {(role === 'admin')&& <UserTable/>}
         {(role === 'admin')&& <UserTable/>}
         {(role === 'admin')&& <UserTable/>}

@@ -43,7 +43,20 @@ function Auth() {
     }
 
     const HandleForm = () => {
-        setSignedUp(true)
+        if(firstName && secondName && date && phone && email && address && password && confirmPassword){
+            if(password === confirmPassword){
+                setSignedUp(true)
+            }
+        }
+    }
+
+    const HandleSignUp = () => {
+        switch(role){
+            case "donor":
+                if(bloodType && rhesus && diseases && donationType){
+                    Socket.request("POST",role,"register",``)
+                }
+        }
     }
 
     const HandleFirstName = (name) => {
@@ -54,8 +67,8 @@ function Auth() {
         setSecondName(name)
     }
 
-    const HandleDateOfBirth = (name) => {
-        setDate(name)
+    const HandleDateOfBirth = (date) => {
+        setDate(date)
     }
 
     const HandlePhone = (phone) => {
@@ -123,10 +136,10 @@ function Auth() {
                 <div className='container flex-col gap-[16px]'>
                     <h3 className='text-grey-600'>Choose account type:</h3>
                     <div className="container gap-[8px] flex-wrap">
-                        <div className={role === "Donor" ? "role-tab active w-[196px]" : "role-tab w-[196px]"} onClick={(e) => HandleRole('Donor')}>Donor</div>
+                        <div className={role === "donor" ? "role-tab active w-[196px]" : "role-tab w-[196px]"} onClick={(e) => HandleRole('donor')}>Donor</div>
                         <div className={role === "patient" ? "role-tab active w-[196px]" : "role-tab w-[196px]"} onClick={(e) => HandleRole('patient')}>Patient</div>
                         <div className={role === "staff" ? "role-tab active" : "role-tab"} onClick={(e) => HandleRole('staff')}>H. Staff</div>
-                        <div className={role === "Doctor" ? "role-tab active" : "role-tab"} onClick={(e) => HandleRole('Doctor')}>Doctor</div>
+                        <div className={role === "doctor" ? "role-tab active" : "role-tab"} onClick={(e) => HandleRole('doctor')}>Doctor</div>
                         <div className={role === "admin" ? "role-tab active" : "role-tab"} onClick={(e) => HandleRole('admin')}>Admin</div>
                     </div>
                 </div>
@@ -216,7 +229,7 @@ function Auth() {
         }
 
         {
-            signedUp && (role === 'Donor') &&
+            signedUp && (role === 'donor') &&
             <div className='container flex-col gap-[16px]'>
                 <div className='flex gap-[12px] justify-between'>
                     <div className='container flex-col max-w-[195px] flex-grow-[1]'>
@@ -247,7 +260,7 @@ function Auth() {
                         <div className={donationType === "Paid" ? "role-tab active w-[196px]" : "role-tab w-[196px]"} onClick={(e) => HandleDonationType('Paid')}>Paid</div>
                     </div>
                 </div>
-                <button onClick={() => {navigate(`/main/?page=home&role=${role}`)}}>Continue</button>
+                <button onClick={() => {HandleSignUp()}}>Continue</button>
             </div>
         }
 
@@ -291,7 +304,7 @@ function Auth() {
         }
 
         {
-            signedUp && (role === 'staff' || role === 'Doctor') &&
+            signedUp && (role === 'staff' || role === 'doctor') &&
             <div className='container flex-col gap-[16px]'>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Select your hospital</h4>

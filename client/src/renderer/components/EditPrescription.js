@@ -124,7 +124,7 @@ function EditPrescription({setSubpage,subpage,role}) {
                     <h4 className='input-header'>Amount of Blood (ml)</h4>
                     <input type='text'/>
                 </div>
-                {(role === 'Doctor') && <button className='secondary'>Save changes</button>}
+                {(role === 'doctor') && <button className='secondary'>Save changes</button>}
                 {(role === 'staff') && 
                     <div className='container flex-col gap-[16px]'>
                         <button>Accept</button>
