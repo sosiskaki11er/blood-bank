@@ -53,7 +53,9 @@ Route::post('donor/logout', [DonorController::class, 'logout'])->middleware('aut
 
 Route::put('donor/update/{guid}', [DonorController::class, 'update'])->middleware('auth:sanctum', 'role:donor');
 
-Route::get('donor/transfusion/show', [TransfusionController::class, 'donorIndex'])->middleware('auth:sanctum', 'role:donor');
+Route::get('donor/transfusion/index', [TransfusionController::class, 'donorIndex'])->middleware('auth:sanctum', 'role:donor');
+
+Route::get('donor/transfusion/show/{guid}', [TransfusionController::class, 'show'])->middleware('auth:sanctum', 'role:donor');
 
 Route::post('donor/transfusion/create', [TransfusionController::class, 'create'])->middleware('auth:sanctum', 'role:donor');
 

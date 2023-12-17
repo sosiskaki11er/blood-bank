@@ -59,7 +59,7 @@ class InfusionController extends Controller
     {
         $data = request()->validate([
             'date' => 'nullable|date',
-            'time' => 'nullable|date_format:H:i:s',
+            'time' => 'nullable',
             'hospital_guid' => 'nullable',
             'doctor_guid' => 'nullable',
         ]);
