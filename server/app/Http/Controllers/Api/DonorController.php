@@ -34,6 +34,9 @@ class DonorController extends Controller
             'address' => 'required',
             'email' => 'required',
             'password' => 'required',
+            'blood_type' => 'nullable',
+            'blood_rh' => 'nullable',
+            'blood_disease' => 'nullable',
             'birth' => 'required',
         ]);
 
