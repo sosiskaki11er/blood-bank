@@ -58,6 +58,7 @@ class DoctorController extends Controller
             'email' => 'required',
             'password' => 'required',
             'description' => 'nullable',
+            'hospital_guid' => 'nullable',
             'birth' => 'required',
         ]);
 
