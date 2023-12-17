@@ -41,7 +41,7 @@ class StaffController extends Controller
             'address' => 'required|string',
             'email' => 'required|email|unique:staff',
             'password' => 'required|string',
-            'birth' => 'required|date',
+            'birth' => 'required',
         ]);
         $data['password'] = bcrypt($data['password']);
 

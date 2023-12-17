@@ -40,7 +40,7 @@ class PatientController extends Controller
             'address' => 'required|string',
             'email' => 'required|email|unique:patients',
             'password' => 'required|string',
-            'birth' => 'required|date',
+            'birth' => 'required',
         ]);
         $data['password'] = bcrypt($data['password']);
 
