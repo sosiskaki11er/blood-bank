@@ -68,21 +68,29 @@ function Auth() {
             case "donor":
                 if(bloodType && rhesus && diseases){
                     Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date.replaceAll("-",".")}&blood_type=${bloodType}&blood_rh=${rhesus}&blood_disease=${diseases}`)
+                    .then(data => localStorage.setItem("user",JSON.stringify(data)))
+                    .then(() => navigate(`/main/?page=home&role=${role}`))
                 }
                 break;
             case "patient":
                 if(doctor && bloodType && rhesus && diseases){
                     Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date.replaceAll("-",".")}&blood_type=${bloodType}&blood_rh=${rhesus}&blood_disease=${diseases}&doctor_guid=${doctor}`)
+                    .then(data => localStorage.setItem("user",JSON.stringify(data)))
+                    .then(() => navigate(`/main/?page=home&role=${role}`))
                 }
                 break;
             case "doctor":
                 if(hospital){
                     Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date.replaceAll("-",".")}&hospital_guid=${hospital}`)
+                    .then(data => localStorage.setItem("user",JSON.stringify(data)))
+                    .then(() => navigate(`/main/?page=home&role=${role}`))
                 }
                 break;
             case "staff":
                 if(hospital){
                     Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date.replaceAll("-",".")}&hospital_guid=${hospital}`)
+                    .then(data => localStorage.setItem("user",JSON.stringify(data)))
+                    .then(() => navigate(`/main/?page=home&role=${role}`))
                 }
                 break;
             

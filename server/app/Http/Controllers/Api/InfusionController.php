@@ -58,8 +58,8 @@ class InfusionController extends Controller
     public function update($guid): JsonResponse
     {
         $data = request()->validate([
-            'date' => 'nullable|date',
-            'time' => 'nullable|date_format:H:i:s',
+            'date' => 'nullable',
+            'time' => 'nullable',
             'hospital_guid' => 'nullable',
             'doctor_guid' => 'nullable',
         ]);
