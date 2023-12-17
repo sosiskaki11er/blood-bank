@@ -44,7 +44,7 @@ function EditPrescription({setSubpage,subpage,role}) {
         <h3>Go back</h3>
       </button>
       {
-        (role === 'H. Staff') &&
+        (role === 'staff') &&
         <div className='component'>
             <h3>Action to be performed</h3>
             <div className='container gap-[20px]'>
@@ -125,7 +125,7 @@ function EditPrescription({setSubpage,subpage,role}) {
                     <input type='text'/>
                 </div>
                 {(role === 'Doctor') && <button className='secondary'>Save changes</button>}
-                {(role === 'H. Staff') && 
+                {(role === 'staff') && 
                     <div className='container flex-col gap-[16px]'>
                         <button>Accept</button>
                         <button className='secondary'>Reject</button>

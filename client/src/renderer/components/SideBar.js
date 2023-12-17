@@ -17,16 +17,16 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
             role === 'Donor' && <h2>Hello, Donor!</h2>
           }
           {
-            role === 'Patient' && <h2>Hi, Patient!</h2>
+            role === 'patient' && <h2>Hi, Patient!</h2>
           }
           {
             role === 'Doctor' && <h2>Howdy, Doctor!</h2>
           }
           {
-            role === 'H. Staff' && <h2>Welcome, Staff!</h2>
+            role === 'staff' && <h2>Welcome, Staff!</h2>
           }
           {
-            role === 'Admin' && <h2>Welcome, Admin!</h2>
+            role === 'admin' && <h2>Welcome, Admin!</h2>
           }
           <h4 className='text-sm'>Tech. support:<br/>+998 (90) 123-45-67</h4>
         </div>
@@ -51,7 +51,7 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
           }
 
           {
-            (role === 'Patient') &&
+            (role === 'patient') &&
             <div 
             className={subpage === 'schedule' ? 'page-tab active': 'page-tab'}
             onClick={() => handleSubpage('schedule')}
@@ -62,7 +62,7 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
           }
 
           {
-            (role === 'Doctor' || role === 'H. Staff') &&
+            (role === 'Doctor' || role === 'staff') &&
             <div 
             className={subpage === 'schedule' ? 'page-tab active': 'page-tab'}
             onClick={() => handleSubpage('schedule')}
@@ -73,7 +73,7 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
           }
 
           {
-            (role === 'Doctor' || role === 'H. Staff') &&
+            (role === 'Doctor' || role === 'staff') &&
             <div 
             className={(subpage === 'prescriptions' || subpage === 'edit-prescription') ? 'page-tab active': 'page-tab'}
             onClick={() => handleSubpage('prescriptions')}
@@ -84,7 +84,7 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
           }
 
           {
-            (role === 'Patient') &&
+            (role === 'patient') &&
             <div 
             className={subpage === 'request' ? 'page-tab active': 'page-tab'}
             onClick={() => handleSubpage('request')}
@@ -95,7 +95,7 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
           }
 
           {
-            (role === 'Admin') && 
+            (role === 'admin') && 
             <div 
             className={subpage === 'hospital' ? 'page-tab active': 'page-tab'}
             onClick={() => handleSubpage('hospital')}

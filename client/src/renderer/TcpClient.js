@@ -1,4 +1,8 @@
+const { rejects } = require('assert');
+const { error } = require('console');
 const net = require('net');
+const { resolve } = require('path');
+let decoder = new TextDecoder('utf-8');
 
 class TcpClient {
   constructor(host, port, handlers) {
@@ -14,7 +18,7 @@ class TcpClient {
     });
 
     this.client.on('data', (data) => {
-      this.handleData(data.toString());
+      this.handleData(JSON.parse(decoder.decode(data).slice(7)));
     });
 
     this.client.on('close', () => {
@@ -22,18 +26,34 @@ class TcpClient {
     });
   }
 
-  handleData(data) {
-    const [route, message] = data.split(':');
-    if (this.handlers[route]) {
-      this.handlers[route](message);
-    } else {
-      console.error(`No handler for route: ${route}`);
-    }
+  handleData() {
+    // const [route, message] = data.split(':');
+    // if (this.handlers[route]) {
+    //   this.handlers[route](message);
+    // } else {
+    //   console.error(`No handler for route: ${route}`);
+    // }
+
   }
 
   send(message) {
     //const message = `${route}:${data}`;
-    this.client.write(message);
+    //this.client.write(`${method}:${role}/${route}?${params}`);
+    this.client.write(message)
+  }
+
+
+async request(type,role,route,params){
+    return new Promise((resolve, reject) => {
+      this.client.write(`${type}:${role}/${route}?${params}`)
+      this.client.on('data', (data) => {
+        resolve(JSON.parse(decoder.decode(data).slice(7)));
+      });
+
+      this.client.on('error',(error) => {
+        reject(error)
+      })
+    })
   }
 }
 

@@ -11,16 +11,16 @@ function Home({subpage, handleSubpage,role}) {
   return (
     <div className='subpage'>
         <Banner/>
-        {(role === 'H. Staff' || role === 'Admin') && <BloodAvailable/>}
-        {(role !== 'Admin') && <Appointments handleSubpage={handleSubpage} role={role} subpage={subpage}/>}
-        {(role === 'Patient') && <Medinfo handleSubpage={handleSubpage}/>}
-        {(role === 'Doctor' || role==='H. Staff') && <Requests handleSubpage={handleSubpage}/>}
+        {(role === 'staff' || role === 'admin') && <BloodAvailable/>}
+        {(role !== 'admin') && <Appointments handleSubpage={handleSubpage} role={role} subpage={subpage}/>}
+        {(role === 'patient') && <Medinfo handleSubpage={handleSubpage}/>}
+        {(role === 'Doctor' || role==='staff') && <Requests handleSubpage={handleSubpage}/>}
         {(role === 'Doctor') && <BloodAvailable/>}
-        {(role === 'Patient' || role === 'Donor') && <History/>}
-        {(role === 'Admin')&& <UserTable/>}
-        {(role === 'Admin')&& <UserTable/>}
-        {(role === 'Admin')&& <UserTable/>}
-        {(role === 'Admin')&& <UserTable/>}
+        {(role === 'patient' || role === 'Donor') && <History/>}
+        {(role === 'admin')&& <UserTable/>}
+        {(role === 'admin')&& <UserTable/>}
+        {(role === 'admin')&& <UserTable/>}
+        {(role === 'admin')&& <UserTable/>}
     </div>
   )
 }

@@ -27,7 +27,7 @@ function Appointments({handleSubpage,subpage,role}) {
             </div>
 
             {
-                (subpage === 'home' && (role==="Donor" || role==="Patient")) ? 
+                (subpage === 'home' && (role==="Donor" || role==="patient")) ? 
                 <div 
                     className='add-tab'
                     onClick={() => handleSubpage('schedule')}
@@ -58,7 +58,7 @@ function Appointments({handleSubpage,subpage,role}) {
             }
 
             {
-                (role==='Doctor' || role === 'H. Staff') && 
+                (role==='Doctor' || role === 'staff') && 
                 <>
                 <div className='card gap-[48px]'>
                 <div className='my-auto'>
@@ -102,7 +102,7 @@ function Appointments({handleSubpage,subpage,role}) {
             }
 
             {
-                ((role==='Doctor' || role === 'H. Staff') && subpage!== "home") && 
+                ((role==='Doctor' || role === 'staff') && subpage!== "home") && 
                 <>
                 <div className='card gap-[48px]'>
                 <div className='my-auto'>
@@ -183,7 +183,7 @@ function Appointments({handleSubpage,subpage,role}) {
                 </>
             }
         </div>
-        {(role==='Doctor' || role === 'H. Staff') &&
+        {(role==='Doctor' || role === 'staff') &&
             <button className='tertiary'>See more</button>
         }
     </div>

@@ -15,7 +15,7 @@ function Schedule({role}) {
     <div className='subpage'>
       <Appointments role={role}/>
       {
-        (role === 'Patient' || role === 'Donor') &&
+        (role === 'patient' || role === 'Donor') &&
                 <div className='component max-w-[684px]'>
             <h3>Schedule appointment</h3>
             <div className='container flex-col gap-[24px]'>
@@ -37,7 +37,7 @@ function Schedule({role}) {
                             </select>
                         </div>
                         {
-                            (role === 'Patient') &&
+                            (role === 'patient') &&
                             <div className='container flex-grow-[1] flex-col max-w-[332px]'>
                                 <h4 className='input-header'>Doctor’s Name*</h4>
                                 <select value={doctor} onChange={(e) => setDoctor(e.target.value)}>

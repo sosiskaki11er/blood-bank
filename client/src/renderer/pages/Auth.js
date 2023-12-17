@@ -2,7 +2,7 @@ import {useNavigate} from 'react-router-dom'
 import React, { useState } from 'react'
 import BloodImg from '../assets/img/svg.png'
 import HeartLogo from '../assets/icons/activity-heart.svg'
-
+import { Socket } from '..'
 
 function Auth() {
     const [role,setRole] = useState('')
@@ -26,8 +26,12 @@ function Auth() {
     const [doctorID, setDoctorID] = useState('')
     const navigate = useNavigate()
 
-    const HandleLogin = (login) => {
-        setLogin(login)
+    const HandleLogin = () => {
+        if(phone && password){
+            Socket.request("POST",role,"login",`phone=${phone}&password=${password}`)
+            .then(data => localStorage.setItem("user",JSON.stringify(data)))
+            .then(() => navigate(`/main/?page=home&role=${role}`))
+        }
     }
 
     const HandlePassword = (password) => {
@@ -99,6 +103,7 @@ function Auth() {
             setRoled(true)
         }
     }
+
   return (
     <div className="container">
       <img src={BloodImg} alt='bg' className='h-screen'/>
@@ -119,10 +124,10 @@ function Auth() {
                     <h3 className='text-grey-600'>Choose account type:</h3>
                     <div className="container gap-[8px] flex-wrap">
                         <div className={role === "Donor" ? "role-tab active w-[196px]" : "role-tab w-[196px]"} onClick={(e) => HandleRole('Donor')}>Donor</div>
-                        <div className={role === "Patient" ? "role-tab active w-[196px]" : "role-tab w-[196px]"} onClick={(e) => HandleRole('Patient')}>Patient</div>
-                        <div className={role === "H. Staff" ? "role-tab active" : "role-tab"} onClick={(e) => HandleRole('H. Staff')}>H. Staff</div>
+                        <div className={role === "patient" ? "role-tab active w-[196px]" : "role-tab w-[196px]"} onClick={(e) => HandleRole('patient')}>Patient</div>
+                        <div className={role === "staff" ? "role-tab active" : "role-tab"} onClick={(e) => HandleRole('staff')}>H. Staff</div>
                         <div className={role === "Doctor" ? "role-tab active" : "role-tab"} onClick={(e) => HandleRole('Doctor')}>Doctor</div>
-                        <div className={role === "Admin" ? "role-tab active" : "role-tab"} onClick={(e) => HandleRole('Admin')}>Admin</div>
+                        <div className={role === "admin" ? "role-tab active" : "role-tab"} onClick={(e) => HandleRole('admin')}>Admin</div>
                     </div>
                 </div>
 
@@ -142,14 +147,14 @@ function Auth() {
             (auth === 'login') && 
             <div className='container flex-col gap-[16px]'>
                 <div className='container flex-col'>
-                    <h4 className='input-header' >Login*</h4>
-                    <input type='text' onChange={(e) => HandleLogin(e.target.value)}/>
+                    <h4 className='input-header' >Phone*</h4>
+                    <input type='text' onChange={(e) => HandlePhone(e.target.value)} value={phone}/>
                 </div>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Password*</h4>
-                    <input type='password' onChange={(e) => HandlePassword(e.target.value)}/>
+                    <input type='password' onChange={(e) => HandlePassword(e.target.value)} value={password}/>
                 </div>
-                <button onClick={() => {navigate(`/main/?page=home&role=${role}`)}}>Log in</button>
+                <button onClick={() => {HandleLogin()}}>Log in</button>
                 {role !== 'Admin' &&
                 <div className='flex mx-auto text-sm flex-col gap-[4px] leading-[48px]'>
                     <div className='flex gap-[6px]'>
@@ -247,7 +252,7 @@ function Auth() {
         }
 
         {
-            signedUp && (role === 'Patient') &&
+            signedUp && (role === 'patient') &&
             <div className='container flex-col gap-[16px]'>
                 <div className='flex gap-[12px]'>
                     <div className='container flex-col max-w-[195px]'>
@@ -286,7 +291,7 @@ function Auth() {
         }
 
         {
-            signedUp && (role === 'H. Staff' || role === 'Doctor') &&
+            signedUp && (role === 'staff' || role === 'Doctor') &&
             <div className='container flex-col gap-[16px]'>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Select your hospital</h4>
