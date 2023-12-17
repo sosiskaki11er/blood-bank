@@ -77,11 +77,11 @@ class DoctorController extends Controller
     public function login(): JsonResponse
     {
         $data = request()->validate([
-            'email' => 'required',
+            'phone' => 'required',
             'password' => 'required',
         ]);
 
-        $doctor = Doctor::where('email', $data['email'])->first();
+        $doctor = Doctor::where('phone', $data['phone'])->first();
 
         if (!$doctor || !Hash::check($data['password'], $doctor->password)) {
             return response()->json([
