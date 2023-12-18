@@ -7,6 +7,8 @@ use App\SocketService;
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 
+use GuzzleHttp\Client;
+
 class SocketCommand extends Command
 {
     /**
@@ -41,22 +43,29 @@ class SocketCommand extends Command
                 }
                 $path = '/api/' . $pathParts;
 
-                //call the route with the path
-                $request = Request::create($path, $method);
-                $request->headers->set('Accept', 'application/json');
-                if (count($responseParts) == 5) {
-                    $request->headers->set('Authorization', 'Bearer ' . $token);
+                try
+                {
+                    //call the route with the path
+                    $client = new Client(['base_uri' => 'http://127.0.0.1:8000']);
+                    $response = $client->request($method, $path, [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $token,
+                        'Accept' => 'application/json',
+                    ],
+                ]);
+                } catch (\Exception $e) {
+                    $content = 'front:'. $front_id . ':error';
+                    $socket->write($content);
+                    continue;
                 }
-                $response = app()->handle($request);
+
+                // $response = app()->handle($request);
                 if ($response->getStatusCode() == 0) {
                     $content = 'front:'. $front_id . ':error';
                     $socket->write($content);
                 }
-                $content = 'front:'. $front_id . ':' . $response->getContent();
+                $content = 'front:'. $front_id . ':' . $response->getBody();
 
-                if (count($responseParts) == 5) {
-                    echo $responseParts[4];
-                }
                 echo $content;
                 $socket->write($content);
             }
