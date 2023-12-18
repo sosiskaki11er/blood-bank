@@ -40,6 +40,8 @@ class SocketCommand extends Command
                 $pathParts = $responseParts[3];
                 if (count($responseParts) == 5) {
                     $token = $responseParts[4];
+                } else {
+                    $token = null;
                 }
                 $path = '/api/' . $pathParts;
 

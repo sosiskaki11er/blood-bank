@@ -28,9 +28,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //BloodBanks
-Route::get('bloodBank/showAll', [BloodBankController::class, 'index'])->middleware('auth:sanctum', 'role:admin');
+Route::get('bloodBank/showAll', [BloodBankController::class, 'index']);
 
-Route::get('bloodBank/show/{guid}', [BloodBankController::class, 'show'])->middleware('auth:sanctum', 'role:doctor');
+Route::get('bloodBank/show/{guid}', [BloodBankController::class, 'show']);
 
 //Hospitals
 Route::post('hospital/create', [HospitalController::class, 'create'])->middleware('auth:sanctum', 'role:admin');
