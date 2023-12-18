@@ -4,6 +4,7 @@ import { Socket } from '..'
 import Appointment from './Appointment'
 
 function Appointments({handleSubpage,subpage,role}) {
+    console.log(role)
     const user = JSON.parse(localStorage.getItem("user"))
     const [appointments, setAppointments] = useState([])
 
@@ -13,15 +14,19 @@ function Appointments({handleSubpage,subpage,role}) {
                 case "donor":
                     Socket.request("GET",role,"transfusion/index",`:${user.token}`)
                     .then(data => setAppointments(data.data))
-                case "patient":
-                    Socket.request("GET",role,"infusion/index",`:${user.token}`)
-                    .then(data => setAppointments(data.data))
+                    break;
+                // case "patient":
+                //     Socket.request("GET",role,"infusion/index",`:${user.token}`)
+                //     .then(data => setAppointments(data.data))
+                //     break;
                 case "doctor":
                     Socket.request("GET",role,"infusion/index",`:${user.data.token}`)
                     .then(data => {setAppointments(data.data);console.log(data.data)})
+                    break;
                 case "staff":
                     Socket.request("GET",role,"transfusionsIndex",`:${user.token}`)
                     .then(data => {setAppointments(data.data);console.log(data.data)})
+                    break;
             }
             
         },100)
@@ -50,6 +55,17 @@ function Appointments({handleSubpage,subpage,role}) {
                             <h3>Schedule appointment </h3>
                     </div>
                 </>
+                
+            }
+
+            {
+                (subpage !== "home" && role==="donor") &&
+                <>
+                    {
+                    appointments.filter(appointment => appointment.donor_guid === user.data.guid).sort(compareDates).map(appointment => <Appointment appointment={appointment}/>)
+                    }
+                </>
+
                 
             }
 

@@ -12,7 +12,6 @@ class BloodBankController extends Controller
     public function index()
     {
         $bloodBanks = BloodBank::all();
-        $bloodBanks = new BloodBanksResource($bloodBanks);
         return response()->json([
             'status' => 'success',
             'data' => $bloodBanks

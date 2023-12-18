@@ -34,7 +34,7 @@ function Schedule({role,HandleSubpage, subpage}) {
     switch(role){
         case "donor":
             if(date && time && hospital && doctor && donationType){
-                Socket.request("POST",role,"transfusion/create",`date=${date}&time=${time.replaceAll(':',';')}&hospital_guid=${hospital}&type=${donationType}:${user.token}`)
+                Socket.request("POST",role,"transfusion/create",`?date=${date}&time=${time.replaceAll(':',';')}&hospital_guid=${hospital}&type=${donationType}:${user.token}`)
             }
         case "patient":
             // if(date && time && hospital && doctor){

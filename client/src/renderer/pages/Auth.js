@@ -41,7 +41,7 @@ function Auth() {
 
     const HandleLogin = () => {
         if(phone && password){
-            Socket.request("POST",role,"login",`phone=${phone}&password=${password}`)
+            Socket.request("POST",role,"login",`?phone=${phone}&password=${password}`)
             .then(data => localStorage.setItem("user",JSON.stringify(data)))
             .then(() => navigate(`/main/?page=home&role=${role}`))
             .catch(() => {alert('Wrong credentials')})
@@ -68,7 +68,7 @@ function Auth() {
         switch(role){
             case "donor":
                 if(bloodType && rhesus && diseases){
-                    Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&blood_type=${bloodType}&blood_rh=${rhesus}&blood_disease=${diseases}`)
+                    Socket.request("POST",role,"register",`?name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&blood_type=${bloodType}&blood_rh=${rhesus}&blood_disease=${diseases}`)
                     .then(data => localStorage.setItem("user",JSON.stringify(data)))
                     .then(() => navigate(`/main/?page=home&role=${role}`))
                     .catch(() => {console.log('zalupa')})
@@ -76,21 +76,21 @@ function Auth() {
                 break;
             case "patient":
                 if(doctor && bloodType && rhesus && diseases){
-                    Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&blood_type=${bloodType}&blood_rh=${rhesus}&blood_disease=${diseases}&doctor_guid=${doctor}`)
+                    Socket.request("POST",role,"register",`?name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&blood_type=${bloodType}&blood_rh=${rhesus}&blood_disease=${diseases}&doctor_guid=${doctor}`)
                     .then(data => localStorage.setItem("user",JSON.stringify(data)))
                     .then(() => navigate(`/main/?page=home&role=${role}`))
                 }
                 break;
             case "doctor":
                 if(hospital){
-                    Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&hospital_guid=${hospital}`)
+                    Socket.request("POST",role,"register",`?name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&hospital_guid=${hospital}`)
                     .then(data => localStorage.setItem("user",JSON.stringify(data)))
                     .then(() => navigate(`/main/?page=home&role=${role}`))
                 }
                 break;
             case "staff":
                 if(hospital){
-                    Socket.request("POST",role,"register",`name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&hospital_guid=${hospital}`)
+                    Socket.request("POST",role,"register",`?name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&hospital_guid=${hospital}`)
                     .then(data => localStorage.setItem("user",JSON.stringify(data)))
                     .then(() => navigate(`/main/?page=home&role=${role}`))
                 }

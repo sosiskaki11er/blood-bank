@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route} from 'react-router-dom'
+import { MemoryRouter as Router, Routes, Route} from 'react-router-dom'
 import Auth from './pages/Auth';
 import Main from './pages/Main';
 import Reset from './pages/Reset';

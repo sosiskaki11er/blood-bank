@@ -28,7 +28,7 @@ class TcpClient {
 
 async request(type,role,route,params){
     return new Promise((resolve, reject) => {
-      this.client.write(`${type}:${role}/${route}?${params}`)
+      this.client.write(`${type}:${role}/${route}${params}`)
       this.client.on('data', (data) => {
         data = JSON.parse(decoder.decode(data).slice(7))
         console.log(data.status)

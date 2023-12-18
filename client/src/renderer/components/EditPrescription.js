@@ -1,21 +1,34 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PersonalInfo from './PersonalInfo'
 import MedicalInfo from './MedicalInfo'
 import BackIcon from '../assets/icons/arrow-narrow-left.svg'
 import DonationImg from '../assets/img/blood.png'
 import TransfusionImg from '../assets/img/transfusion.png'
+import { Socket } from '..'
 
 function EditPrescription({setSubpage,subpage,role}) {
+  const user = JSON.parse(localStorage.getItem("user"))
   const appointment = JSON.parse(localStorage.getItem("edit-appointment"))
-  localStorage.removeItem("edit-appointment")
+  const [transfusion,setTransfusion] = useState()
+  const [amount, setAmount] = useState(0)
+  const [status, setStatus] = useState()
   console.log(appointment)
-  const [firstName, setFirstName] = useState('')
-  const [secondName, setSecondName] = useState('')
-  const [address, setAddress] = useState('')
-  const [date, setDate] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
   const [action, setAction] = useState('donation')
+
+  useEffect(() => {
+    setTimeout(() => {
+        Socket.request("GET",role,"transfusionShow/",`${appointment.guid}:${user.token}`)
+        .then(data => {setTransfusion(data.data);console.log(data.data)})
+    },100)
+  },[])
+
+  const HandleStatus = (status) => {
+    setStatus(status)
+    if(amount !== 0){
+        Socket.request("PUT",role,"bloodTransfusion/",`${appointment?.guid}?status=${status}&amount=${amount}:${user.token}`)
+        .then(data => console.log(data.data))
+    }
+  }
 
   return (
     <div className='subpage'>
@@ -44,30 +57,30 @@ function EditPrescription({setSubpage,subpage,role}) {
                 <div className='flex gap-[12px]'>
                     <div className='container flex-col flex-grow-[1]'>
                         <h4 className='input-header'>First Name*</h4>
-                        <input type='text'/>
+                        <input type='text' disabled value={transfusion?.donor_guid.name}/>
                     </div>
                     <div className='container flex-col flex-grow-[1]'>
                         <h4 className='input-header'>Second Name*</h4>
-                        <input type='text'/>
+                        <input type='text' disabled value={transfusion?.donor_guid.surname}/>
                     </div>
                 </div>
                 <div className='flex gap-[12px]'>
                     <div className='container flex-col flex-grow-[1]'>
                         <h4 className='input-header'>Date of birth*</h4>
-                        <input type='date'/>
+                        <input type='text' disabled value={transfusion?.date}/>
                     </div>
                     <div className='container flex-col flex-grow-[1] max-w-[332px]'>
                         <h4 className='input-header'>Phone number</h4>
-                        <input type='text'/>
+                        <input type='text' disabled value={transfusion?.donor_guid.phone}/>
                     </div>
                 </div>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Email</h4>
-                    <input type='text'/>
+                    <input type='text' disabled value={transfusion?.donor_guid.email}/>
                 </div>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Address</h4>
-                    <input type='text'/>
+                    <input type='text' disabled value={transfusion?.donor_guid.address}/>
                 </div>
             </div>
       </div>
@@ -77,34 +90,34 @@ function EditPrescription({setSubpage,subpage,role}) {
                 <div className='flex gap-[12px] justify-between'>
                     <div className='container flex-col flex-grow-[1] max-w-[332px]'>
                         <h4 className='input-header'>Blood type</h4>
-                        <select>
-                            <option>A</option>
-                            <option>B</option>
-                            <option>O</option>
-                            <option>AB</option>
+                        <select disabled value={transfusion?.donor_guid.blood_type}>
+                            <option value={"A"}>A</option>
+                            <option value={"B"}>B</option>
+                            <option value={"O"}>O</option>
+                            <option value={"AB"}>AB</option>
                         </select>
                     </div>
                     <div className='container flex-col flex-grow-[1] max-w-[332px]'>
                         <h4 className='input-header'>Rhesus</h4>
-                        <select>
-                            <option>+</option>
-                            <option>-</option>
+                        <select disabled value={transfusion?.donor_guid.blood_rh}>
+                            <option value={"%2B"}>+</option>
+                            <option value={"-"}>-</option>
                         </select>
                     </div>
                 </div>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Diseases</h4>
-                    <input type='text'/>
+                    <input type='text' disabled value={transfusion?.donor_guid.diseases}/>
                 </div>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Amount of Blood (ml)</h4>
-                    <input type='text'/>
+                    <input type='text' value={amount} onChange={(e) => setAmount(Number(e.target.value))}/>
                 </div>
                 {(role === 'doctor') && <button className='secondary'>Save changes</button>}
                 {(role === 'staff') && 
                     <div className='container flex-col gap-[16px]'>
-                        <button>Accept</button>
-                        <button className='secondary'>Reject</button>
+                        <button onClick={()=> HandleStatus(1)}>Accept</button>
+                        <button onClick={() => HandleStatus(2)} className='secondary'>Reject</button>
                     </div>
                 }
                 

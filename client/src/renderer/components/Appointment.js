@@ -15,7 +15,7 @@ function Appointment({appointment,role,HandleSubpage}) {
         'November',
         'December'
       ];
-    const statuses = ['Waiting','Rejected','Approved']
+    const statuses = ['Waiting','Approved','Rejected']
     const [edit,setEdit] = useState(false)
     const month = months[Number(appointment?.date.split('-')[1] - 1)]
     const day = appointment?.date.split('-')[2]
