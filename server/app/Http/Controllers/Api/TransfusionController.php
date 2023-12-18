@@ -47,6 +47,8 @@ class TransfusionController extends Controller
             'type' => 'required',
         ]);
 
+        $data['time'] = str_replace(';', ':', $data['time']);
+
         $data['donor_guid'] = auth()->user()->guid;
         $data['status'] = 0;
         $transfusion = Transfusion::create($data);

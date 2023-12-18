@@ -43,9 +43,23 @@ class InfusionController extends Controller
     public function create(): JsonResponse
     {
         $data = request()->validate([
-            'amount' => 'required',
-            'patient_guid' => 'required',
+            'date' => 'required',
+            'time' => 'required',
+            'hospital_guid' => 'required',
+            'doctor_guid' => 'required',
+            'patient_guid' => 'nullable',
         ]);
+
+        $data['time'] = str_replace(';', ':', $data['time']);
+        $data['patient_guid'] = auth()->user()->guid;
+
+        if($data['date'] < date('Y-m-d'))
+        {
+            return response()->json([
+                'status' => 'error',
+                'data' => 'date must be in the future'
+            ]);
+        }
 
         $infusion = Infusion::create($data);
 
@@ -58,32 +72,33 @@ class InfusionController extends Controller
     public function update($guid): JsonResponse
     {
         $data = request()->validate([
-            'date' => 'nullable|date',
-            'time' => 'nullable',
-            'hospital_guid' => 'nullable',
-            'doctor_guid' => 'nullable',
+            'status' => 'required|in:1,2',
+            'amount' => 'required',
         ]);
 
         $infusion = Infusion::where('guid', $guid)->first();
 
-        $bloodBank = BloodBank::where('hospital_guid', $infusion->hospital_guid)->where('blood_type', $infusion->donor->blood_type . $infusion->donor->blood_rh)->first();
-        if ($bloodBank->amount - $infusion->amount < 0)
+        if($data['status'] == 1)
         {
-            return response()->json([
-                'status' => 'error',
-                'data' => 'amount of infusion more than blood bank amount'
-            ]);
-        }
-        $infusion = Infusion::where('guid', $guid)->first();
+            $bloodBank = BloodBank::where('hospital_guid', $infusion->hospital_guid)->where('blood_type', $infusion->patient->blood_type . $infusion->patient->blood_rh)->first();
+            if ($bloodBank->amount - $data['amount'] < 0)
+            {
+                return response()->json([
+                    'status' => 'error',
+                    'data' => 'amount of infusion more than blood bank amount'
+                ]);
+            }
         $infusion->update($data);
 
 
         $bloodBank->amount = $bloodBank->amount - $infusion->amount;
         $bloodBank->save();
+        }
+
 
         return response()->json([
             'status' => 'success',
-            'data' => $infusion
+            'data' => $infusion,
         ]);
     }
 

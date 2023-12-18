@@ -17,6 +17,11 @@ class SocketService
         return $this->socket;
     }
 
+    public function write($message)
+    {
+        fwrite($this->socket, $message);
+    }
+
     public function listen()
     {
         $response = fread($this->socket, 1024);

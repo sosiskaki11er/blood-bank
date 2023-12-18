@@ -80,7 +80,7 @@ Route::get('patient/infusion/index', [InfusionController::class, 'patientIndex']
 
 Route::get('patient/infusion/show/{guid}', [InfusionController::class, 'show'])->middleware('auth:sanctum', 'role:patient');
 
-Route::put('patient/infusion/update/{guid}', [InfusionController::class, 'update'])->middleware('auth:sanctum', 'role:donor');
+Route::post('patient/infusion/create', [InfusionController::class, 'create'])->middleware('auth:sanctum', 'role:patient');
 
 Route::delete('patient/delete/{guid}', [PatientController::class, 'destroy'])->middleware('auth:sanctum', 'role:patient');
 
@@ -103,7 +103,7 @@ Route::get('doctor/infusion/index', [InfusionController::class, 'index'])->middl
 
 Route::get('doctor/infusion/show/{guid}', [InfusionController::class, 'show'])->middleware('auth:sanctum', 'role:doctor');
 
-Route::post('doctor/infusion/create', [InfusionController::class, 'create'])->middleware('auth:sanctum', 'role:doctor');
+Route::put('doctor/infusion/update/{guid}', [InfusionController::class, 'update'])->middleware('auth:sanctum', 'role:doctor');
 
 Route::delete('doctor/delete/{guid}', [DoctorController::class, 'destroy'])->middleware('auth:sanctum', 'role:doctor');
 

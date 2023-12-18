@@ -14,6 +14,7 @@ class Infusion extends Model
     protected $fillable = [
         'patient_guid',
         'hospital_guid',
+        'doctor_guid',
         'date',
         'time',
         'status',

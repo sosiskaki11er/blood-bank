@@ -54,6 +54,9 @@ class SocketCommand extends Command
                 }
                 $content = 'front:'. $front_id . ':' . $response->getContent();
 
+                if (count($responseParts) == 5) {
+                    echo $responseParts[4];
+                }
                 echo $content;
                 $socket->write($content);
             }
