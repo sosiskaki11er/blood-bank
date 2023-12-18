@@ -74,6 +74,7 @@ class StaffController extends Controller
 
         return response()->json([
             'status' => 'success',
+            'staff' => $staff,
             'token' => $token
         ]);
     }
