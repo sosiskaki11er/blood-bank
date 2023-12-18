@@ -25,6 +25,10 @@ class Patient extends Model
         'password',
         'description',
         'birth',
+        'blood_type',
+        'blood_rh',
+        'blood_disease',
+        'doctor_guid'
     ];
 
     public $incrementing = false;
