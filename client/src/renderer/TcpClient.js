@@ -30,11 +30,15 @@ async request(type,role,route,params){
     return new Promise((resolve, reject) => {
       this.client.write(`${type}:${role}/${route}?${params}`)
       this.client.on('data', (data) => {
-        resolve(JSON.parse(decoder.decode(data).slice(7)));
+        data = JSON.parse(decoder.decode(data).slice(7))
+        console.log(data.status)
+        if(data.status === 'error' || !data.status){
+          reject()
+        }
+        resolve(data);
       });
 
       this.client.on('error',(error) => {
-        reject(error)
       })
     })
   }

@@ -239,9 +239,19 @@ select{
   my-auto
 }
 
-.indicator.approve{
+.indicator.Approved{
   @apply
   bg-green
+}
+
+.indicator.Waiting{
+  @apply
+  bg-yellow-500
+}
+
+.indicator.Rejected{
+  @apply
+  bg-red-600
 }
 
 .add-tab{
