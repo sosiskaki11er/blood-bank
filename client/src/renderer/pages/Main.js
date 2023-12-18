@@ -29,7 +29,7 @@ function Main() {
           (subpage === 'home') && <Home subpage={subpage} handleSubpage={HandleSubpage} role={role}/>
         }
                 {
-          (subpage === 'schedule') && <Schedule role={role}/>
+          (subpage === 'schedule') && <Schedule role={role} subpage={subpage} HandleSubpage={HandleSubpage}/>
         }
                 {
           (subpage === 'request') && <Request/>

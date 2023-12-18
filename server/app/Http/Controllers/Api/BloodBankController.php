@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BloodBanksResource;
+use App\Http\Resources\BloodBankResource;
 use App\Models\BloodBank;
 use Illuminate\Http\Request;
 
@@ -21,7 +21,15 @@ class BloodBankController extends Controller
 
     public function show(Request $request)
     {
-        $bloodBank = BloodBank::where('guid', $request->guid)->first();
+        $bloodBank = BloodBank::where('hospital_guid', $request->guid)->get();
+
+        $bloodBank = $bloodBank->map(function ($bloodBank) {
+            return [
+                'blood_type' => $bloodBank->blood_type,
+                'amount' => $bloodBank->amount,
+            ];
+        });
+        
         return response()->json([
             'status' => 'success',
             'data' => $bloodBank

@@ -19,7 +19,7 @@ function Auth() {
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const [bloodType, setBloodType] = useState('A')
-    const [rhesus,setRhesus] = useState('"+"')
+    const [rhesus,setRhesus] = useState('%2B')
     const [diseases, setDiseases] = useState('')
     const [doctorName, setDoctorName] = useState('')
     const [doctorID, setDoctorID] = useState('')
@@ -280,7 +280,7 @@ function Auth() {
                     <div className='container flex-col max-w-[195px] flex-grow-[1]'>
                         <h4 className='input-header'>Rhesus</h4>
                         <select onChange={(e) => HandleRhesus(e.target.value)} value={rhesus}>
-                            <option value={"'+'"}>+</option>
+                            <option value={"%2B"}>+</option>
                             <option value={"-"}>-</option>
                         </select>
                     </div>
@@ -305,20 +305,20 @@ function Auth() {
                     </select>
                 </div>
                 <div className='flex gap-[12px] justify-between'>
-                    <div className='container flex-col max-w-[195px]'>
+                    <div className='container flex-col max-w-[195px] flex-grow-[1]'>
                         <h4 className='input-header'>Blood type</h4>
-                        <select className='w-[200px]' onChange={(e) => HandleBloodType(e.target.value)}>
-                            <option>A</option>
-                            <option>B</option>
-                            <option>O</option>
-                            <option>AB</option>
+                        <select onChange={(e) => HandleBloodType(e.target.value)} value={bloodType}>
+                            <option value={"A"}>A</option>
+                            <option value={"B"}>B</option>
+                            <option value={"O"}>O</option>
+                            <option value={"AB"}>AB</option>
                         </select>
                     </div>
-                    <div className='container flex-col max-w-[195px]'>
+                    <div className='container flex-col max-w-[195px] flex-grow-[1]'>
                         <h4 className='input-header'>Rhesus</h4>
-                        <select className='w-[200px]' onChange={(e) => HandleRhesus(e.target.value)}>
-                            <option>+</option>
-                            <option>-</option>
+                        <select onChange={(e) => HandleRhesus(e.target.value)} value={rhesus}>
+                            <option value={"%2B"}>+</option>
+                            <option value={"-"}>-</option>
                         </select>
                     </div>
                 </div>
@@ -334,6 +334,7 @@ function Auth() {
             signedUp && (role === 'staff' || role === 'doctor') &&
             <div className='container flex-col gap-[16px]'>
                 <div className='container flex-col'>
+                    <h1>{hospital}</h1>
                     <h4 className='input-header'>Select your hospital</h4>
                     <select type='text' onChange={(e) => setHospital(e.target.value)} value={hospital}>
                         {

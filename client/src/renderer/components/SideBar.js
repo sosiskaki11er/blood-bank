@@ -73,17 +73,6 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
           }
 
           {
-            (role === 'doctor' || role === 'staff') &&
-            <div 
-            className={(subpage === 'prescriptions' || subpage === 'edit-prescription') ? 'page-tab active': 'page-tab'}
-            onClick={() => handleSubpage('prescriptions')}
-            >
-              <img src={HeartIcon} className='page-icon'/>
-              <h3>Prescriptions</h3>
-            </div> 
-          }
-
-          {
             (role === 'patient') &&
             <div 
             className={subpage === 'request' ? 'page-tab active': 'page-tab'}

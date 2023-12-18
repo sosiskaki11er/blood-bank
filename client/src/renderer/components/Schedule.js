@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Appointments from './Appointments'
 import { Socket } from '..'
 
-function Schedule({role}) {
+function Schedule({role,HandleSubpage, subpage}) {
   const user = JSON.parse(localStorage.getItem("user"))
   console.log(user)
   const [date, setDate] = useState('')
@@ -45,7 +45,7 @@ function Schedule({role}) {
   }
   return (
     <div className='subpage'>
-      <Appointments role={role}/>
+      <Appointments role={role} handleSubpage={HandleSubpage}/>
       {
         (role === 'patient' || role === 'donor') &&
         <div className='component max-w-[684px]'>

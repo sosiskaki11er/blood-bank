@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TransfusionResource;
 use App\Models\BloodBank;
 use App\Models\Transfusion;
 use Illuminate\Http\JsonResponse;
@@ -19,9 +20,9 @@ class TransfusionController extends Controller
             'data' => $transfusions
         ]);
     }
-    public function index(Request $request)
+    public function index()
     {
-        $transfusions = Transfusion::where('hospital_guid', $request->hospital_guid)->get();
+        $transfusions = Transfusion::where('hospital_guid', auth()->user()->hospital->guid)->get();
 
         return response()->json([
             'status' => 'success',
@@ -31,6 +32,8 @@ class TransfusionController extends Controller
     public function show($guid): JsonResponse
     {
         $transfusion = Transfusion::where('guid', $guid)->first();
+
+        $transfusion = new TransfusionResource($transfusion);
 
         return response()->json([
             'status' => 'success',

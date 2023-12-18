@@ -25,7 +25,7 @@ class Staff extends Model
         'password',
         'description',
         'birth',
-        'hospital_id',
+        'hospital_guid',
     ];
 
     public $incrementing = false;
