@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TransfusionResource extends JsonResource
+class InfusionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,8 +19,8 @@ class TransfusionResource extends JsonResource
                 'date' => $this->date,
                 'time' => $this->time,
                 'hospital_guid' => $this->hospital,
-                'user' => $this->donor,
-                'type' => $this->type,
+                'user' => $this->patient,
+                'doctor' => $this->doctor,
                 'status' => $this->status,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at

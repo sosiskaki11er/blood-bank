@@ -17,22 +17,35 @@ function EditPrescription({setSubpage,subpage,role}) {
 
   useEffect(() => {
     setTimeout(() => {
-        Socket.request("GET",role,"transfusionShow/",`${appointment.guid}:${user.token}`)
-        .then(data => {setTransfusion(data.data);console.log(data.data)})
+        if(role === "staff"){
+            Socket.request("GET",role,"transfusionShow/",`${appointment.guid}:${user.token}`)
+            .then(data => {setTransfusion(data.data);console.log(data.data)})
+        }
+        else{
+            Socket.request("GET",role,"infusion/show/",`${appointment.guid}:${user.data.token}`)
+            .then(data => {setTransfusion(data.data);console.log(data.data)})
+        }
     },100)
   },[])
 
   const HandleStatus = (status) => {
     setStatus(status)
     if(amount !== 0){
-        Socket.request("PUT",role,"bloodTransfusion/",`${appointment?.guid}?status=${status}&amount=${amount}:${user.token}`)
-        .then(data => console.log(data.data))
+        if(role === 'staff') {
+            Socket.request("PUT",role,"bloodTransfusion/",`${appointment?.guid}?status=${status}&amount=${amount/1000}:${user.token}`)
+            .then(data => console.log(data.data)) 
+        }
+        else{
+            Socket.request("PUT",role,"infusion/update/",`${appointment?.guid}?status=${status}&amount=${amount/1000}:${user.data.token}`)
+            .then(data => console.log(data.data))
+            .catch(error => alert("Amount of infusion more than blood bank amount"))
+        }
     }
   }
 
   return (
     <div className='subpage'>
-      <button className='tertiary mr-auto flex gap-[8px]' onClick={() => setSubpage('prescriptions')}>
+      <button className='tertiary mr-auto flex gap-[8px]' onClick={() => setSubpage('schedule')}>
         <img src={BackIcon} className='my-auto'/>
         <h3>Go back</h3>
       </button>
@@ -57,11 +70,11 @@ function EditPrescription({setSubpage,subpage,role}) {
                 <div className='flex gap-[12px]'>
                     <div className='container flex-col flex-grow-[1]'>
                         <h4 className='input-header'>First Name*</h4>
-                        <input type='text' disabled value={transfusion?.donor_guid.name}/>
+                        <input type='text' disabled value={transfusion?.user.name}/>
                     </div>
                     <div className='container flex-col flex-grow-[1]'>
                         <h4 className='input-header'>Second Name*</h4>
-                        <input type='text' disabled value={transfusion?.donor_guid.surname}/>
+                        <input type='text' disabled value={transfusion?.user.surname}/>
                     </div>
                 </div>
                 <div className='flex gap-[12px]'>
@@ -71,16 +84,16 @@ function EditPrescription({setSubpage,subpage,role}) {
                     </div>
                     <div className='container flex-col flex-grow-[1] max-w-[332px]'>
                         <h4 className='input-header'>Phone number</h4>
-                        <input type='text' disabled value={transfusion?.donor_guid.phone}/>
+                        <input type='text' disabled value={transfusion?.user.phone}/>
                     </div>
                 </div>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Email</h4>
-                    <input type='text' disabled value={transfusion?.donor_guid.email}/>
+                    <input type='text' disabled value={transfusion?.user.email}/>
                 </div>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Address</h4>
-                    <input type='text' disabled value={transfusion?.donor_guid.address}/>
+                    <input type='text' disabled value={transfusion?.user.address}/>
                 </div>
             </div>
       </div>
@@ -90,7 +103,7 @@ function EditPrescription({setSubpage,subpage,role}) {
                 <div className='flex gap-[12px] justify-between'>
                     <div className='container flex-col flex-grow-[1] max-w-[332px]'>
                         <h4 className='input-header'>Blood type</h4>
-                        <select disabled value={transfusion?.donor_guid.blood_type}>
+                        <select disabled value={transfusion?.user.blood_type}>
                             <option value={"A"}>A</option>
                             <option value={"B"}>B</option>
                             <option value={"O"}>O</option>
@@ -99,7 +112,7 @@ function EditPrescription({setSubpage,subpage,role}) {
                     </div>
                     <div className='container flex-col flex-grow-[1] max-w-[332px]'>
                         <h4 className='input-header'>Rhesus</h4>
-                        <select disabled value={transfusion?.donor_guid.blood_rh}>
+                        <select disabled value={transfusion?.user.blood_rh}>
                             <option value={"%2B"}>+</option>
                             <option value={"-"}>-</option>
                         </select>
@@ -107,14 +120,13 @@ function EditPrescription({setSubpage,subpage,role}) {
                 </div>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Diseases</h4>
-                    <input type='text' disabled value={transfusion?.donor_guid.diseases}/>
+                    <input type='text' disabled value={transfusion?.user.blood_disease}/>
                 </div>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Amount of Blood (ml)</h4>
-                    <input type='text' value={amount} onChange={(e) => setAmount(Number(e.target.value))}/>
+                    <input type='number' max="450" value={amount} onChange={(e) => setAmount(e.target.value)}/>
                 </div>
-                {(role === 'doctor') && <button className='secondary'>Save changes</button>}
-                {(role === 'staff') && 
+                {(role === 'staff' || role==='doctor') && 
                     <div className='container flex-col gap-[16px]'>
                         <button onClick={()=> HandleStatus(1)}>Accept</button>
                         <button onClick={() => HandleStatus(2)} className='secondary'>Reject</button>

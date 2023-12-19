@@ -37,9 +37,10 @@ function Schedule({role,HandleSubpage, subpage}) {
                 Socket.request("POST",role,"transfusion/create",`?date=${date}&time=${time.replaceAll(':',';')}&hospital_guid=${hospital}&type=${donationType}:${user.token}`)
             }
         case "patient":
-            // if(date && time && hospital && doctor){
-            //     Socket.request("POST",role,"transfusion/create",`date=${date}&time=${time.replaceAll(':',';')}&hospital_guid=${hospital}:${user.token}`)
-            // }
+            if(date && time && hospital && doctor){
+                Socket.request("POST",role,"infusion/create",`?date=${date}&time=${time.replaceAll(':',';')}&hospital_guid=${hospital}&doctor_guid=${doctor}:${user.token}`)
+                .catch(error => alert("Appointment cannot be scheduled to the past date"))
+            }
     }
 
   }

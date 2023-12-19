@@ -76,6 +76,7 @@ class PatientController extends Controller
 
         return response()->json([
             'status' => 'success',
+            'patient' => $patient,
             'token' => $token
         ]);
     }

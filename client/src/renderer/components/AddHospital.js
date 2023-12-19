@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import HospitalImg from '../assets/img/hospital.png'
+import { Socket } from '..'
 
-function AddHospital() {
+function AddHospital({role}) {
+    const user = JSON.parse(localStorage.getItem("user"))
     const [name, setName] = useState('')
     const [address, setAddress] = useState('')
     const [date, setDate] = useState('')
@@ -12,22 +14,15 @@ function AddHospital() {
         setName(name)
     }
 
-    const HandleDateOfBirth = (name) => {
-        setDate(name)
-    }
-
-    const HandlePhone = (phone) => {
-        setPhone(phone)
-    }
-
     const HandleAddress = (address) => {
         setAddress(address)
     }
 
-    const HandleEmail = (email) => {
-        setEmail(email)
+    const HandleSubmit = () => {
+        if(name && address){
+            Socket.request("POST","hospital","create",`?name=${name}&address=${address}:${user.token}`)
+        }
     }
-
   return (
     <div className='subpage'>
         <div className='component'>
@@ -44,23 +39,13 @@ function AddHospital() {
                         <input type='text' onChange={(e) => HandleName(e.target.value)}/>
                     </div>
                 </div>
-                <div className='flex gap-[12px]'>
-                    <div className='container flex-col flex-grow-[1]'>
-                    <h4 className='input-header'>Email</h4>
-                    <input type='text' onChange={(e) => HandleEmail(e.target.value)}/>
-                    </div>
-                    <div className='container flex-col flex-grow-[1] max-w-[332px]'>
-                        <h4 className='input-header'>Phone number</h4>
-                        <input type='text' onChange={(e) => HandlePhone(e.target.value)}/>
-                    </div>
-                </div>
                 <div className='container flex-col'>
                     <h4 className='input-header'>Address</h4>
-                    <input type='text' onChange={(e) => HandleAddress(e.target.value)}/>
+                    <input type='text' onChange={(e) => setAddress(e.target.value)}/>
                 </div>
             </div>
             <div className='container flex-col gap-[16px] max-w-[676px]'>
-                <button>Submit</button>
+                <button onClick={() => HandleSubmit()}>Submit</button>
                 <button className='secondary'>Cancel</button>
             </div>
         </div>

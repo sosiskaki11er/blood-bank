@@ -28,7 +28,10 @@ function Appointment({appointment,role,HandleSubpage}) {
             HandleSubpage('edit-prescription')
             localStorage.setItem("edit-appointment",(JSON.stringify(appointment)))
         }
-
+        else{
+            HandleSubpage('edit-prescription')
+            localStorage.setItem("edit-appointment",(JSON.stringify(appointment)))
+        }
     }
   return (
     <>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\InfusionResource;
 use App\Models\BloodBank;
 use App\Models\Infusion;
 use Illuminate\Http\JsonResponse;
@@ -33,6 +34,8 @@ class InfusionController extends Controller
     public function show($guid): JsonResponse
     {
         $infusion = Infusion::where('guid', $guid)->first();
+
+        $infusion = new InfusionResource($infusion);
 
         return response()->json([
             'status' => 'success',

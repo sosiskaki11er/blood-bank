@@ -29,7 +29,7 @@ h4{
   font-medium
 }
 
-input[type="text"],input[type="password"]{
+input[type="text"],input[type="password"],input[type="number"]{
   @apply
   text-sm
   px-[16px]
@@ -262,6 +262,7 @@ select{
   gap-[16px]
   rounded-[8px]
   border-[2px]
+  py-[20px]
   border-red-100
   text-red-600
   cursor-pointer

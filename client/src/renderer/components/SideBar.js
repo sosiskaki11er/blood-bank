@@ -42,8 +42,8 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
           {
             (role === 'donor') &&
             <div 
-            className={subpage === 'donation' ? 'page-tab active': 'page-tab'}
-            onClick={() => handleSubpage('donation')}
+            className={subpage === 'schedule' ? 'page-tab active': 'page-tab'}
+            onClick={() => handleSubpage('schedule')}
             >
               <img src={DonationIcon} className='page-icon'/>
               <h3>Make donation</h3>
@@ -73,17 +73,6 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
           }
 
           {
-            (role === 'patient') &&
-            <div 
-            className={subpage === 'request' ? 'page-tab active': 'page-tab'}
-            onClick={() => handleSubpage('request')}
-            >
-              <img src={HomeIcon} className='page-icon'/>
-              <h3>Request blood</h3>
-            </div>
-          }
-
-          {
             (role === 'admin') && 
             <div 
             className={subpage === 'hospital' ? 'page-tab active': 'page-tab'}
@@ -93,21 +82,6 @@ function SideBar({subpage, handleSubpage,role,setLogout}) {
               <h3>Add hospital</h3>
             </div>
           }
-
-          <div 
-          className={subpage === 'notifications' ? 'page-tab active': 'page-tab'}
-          onClick={() => handleSubpage('notifications')}
-          >
-            <img src={MessageIcon} className='page-icon'/>
-            <h3>Notifications</h3>
-          </div>
-          <div 
-          className={subpage === 'settings' ? 'page-tab active': 'page-tab'}
-          onClick={() => handleSubpage('settings')}
-          >
-            <img src={SettingIcon} className='page-icon'/>
-            <h3>Settings</h3>
-          </div>
         </div>
       </div>
       <div>

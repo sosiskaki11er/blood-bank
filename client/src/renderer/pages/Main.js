@@ -50,10 +50,10 @@ function Main() {
           (subpage === 'edit-prescription') && <EditPrescription setSubpage={setSubpage} subpage={subpage} role={role}/>
         }
         {
-          (subpage === 'hospital') && <AddHospital/>
+          (subpage === 'hospital') && <AddHospital role={role}/>
         }
         {
-          logout && <Logout setLogout={setLogout}/>
+          logout && <Logout role={role} setLogout={setLogout}/>
         }
     </div>
   )

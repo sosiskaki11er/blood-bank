@@ -70,7 +70,7 @@ function Auth() {
                 if(bloodType && rhesus && diseases){
                     Socket.request("POST",role,"register",`?name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&blood_type=${bloodType}&blood_rh=${rhesus}&blood_disease=${diseases}`)
                     .then(data => localStorage.setItem("user",JSON.stringify(data)))
-                    .then(() => navigate(`/main/?page=home&role=${role}`))
+                    .then(() => {setAuth('login');setSignedUp(false)})
                     .catch(() => {console.log('zalupa')})
                 }
                 break;
@@ -78,21 +78,21 @@ function Auth() {
                 if(doctor && bloodType && rhesus && diseases){
                     Socket.request("POST",role,"register",`?name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&blood_type=${bloodType}&blood_rh=${rhesus}&blood_disease=${diseases}&doctor_guid=${doctor}`)
                     .then(data => localStorage.setItem("user",JSON.stringify(data)))
-                    .then(() => navigate(`/main/?page=home&role=${role}`))
+                    .then(() => {setAuth('login');setSignedUp(false)})
                 }
                 break;
             case "doctor":
                 if(hospital){
                     Socket.request("POST",role,"register",`?name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&hospital_guid=${hospital}`)
                     .then(data => localStorage.setItem("user",JSON.stringify(data)))
-                    .then(() => navigate(`/main/?page=home&role=${role}`))
+                    .then(() => {setAuth('login');setSignedUp(false)})
                 }
                 break;
             case "staff":
                 if(hospital){
                     Socket.request("POST",role,"register",`?name=${firstName}&surname=${secondName}&phone=${phone}&address=${address}&email=${email}&password=${password}&birth=${date}&hospital_guid=${hospital}`)
                     .then(data => localStorage.setItem("user",JSON.stringify(data)))
-                    .then(() => navigate(`/main/?page=home&role=${role}`))
+                    .then(() => {setAuth('login');setSignedUp(false)})
                 }
                 break;
             
@@ -188,7 +188,7 @@ function Auth() {
             !auth && roled  && 
             <div className='container flex-col gap-[12px]'>
                 <button onClick={() => setAuth('login')}>Log in</button>
-                {role !== 'Admin' && <button onClick={() => setAuth('signup')} className='secondary'>Sign up</button>}
+                {role !== 'admin' && <button onClick={() => setAuth('signup')} className='secondary'>Sign up</button>}
             </div>
         }
         
@@ -334,7 +334,6 @@ function Auth() {
             signedUp && (role === 'staff' || role === 'doctor') &&
             <div className='container flex-col gap-[16px]'>
                 <div className='container flex-col'>
-                    <h1>{hospital}</h1>
                     <h4 className='input-header'>Select your hospital</h4>
                     <select type='text' onChange={(e) => setHospital(e.target.value)} value={hospital}>
                         {

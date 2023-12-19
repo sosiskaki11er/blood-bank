@@ -3,7 +3,9 @@ import AlertIcon from '../assets/icons/alert-hexagon.svg'
 import { useNavigate } from 'react-router-dom'
 
 function Logout({setLogout}) {
+  const user = JSON.parse(localStorage.getItem("user"))
   const navigate = useNavigate()
+  
   return (
     <div className='modal-bg' onClick={() => setLogout(false)}>
         <div className='modal'>

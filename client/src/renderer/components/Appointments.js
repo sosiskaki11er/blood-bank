@@ -15,10 +15,10 @@ function Appointments({handleSubpage,subpage,role}) {
                     Socket.request("GET",role,"transfusion/index",`:${user.token}`)
                     .then(data => setAppointments(data.data))
                     break;
-                // case "patient":
-                //     Socket.request("GET",role,"infusion/index",`:${user.token}`)
-                //     .then(data => setAppointments(data.data))
-                //     break;
+                case "patient":
+                    Socket.request("GET",role,"infusion/index",`:${user.token}`)
+                    .then(data => {setAppointments(data.data);console.log(data.data)})
+                    break;
                 case "doctor":
                     Socket.request("GET",role,"infusion/index",`:${user.data.token}`)
                     .then(data => {setAppointments(data.data);console.log(data.data)})
@@ -44,9 +44,9 @@ function Appointments({handleSubpage,subpage,role}) {
         <div className='container gap-[20px] flex-wrap'>
 
             {
-                (subpage === 'home' && (role==="donor" || role==="patient")) && 
+                (subpage === 'home' && role==="donor") && 
                 <>
-                    <Appointment handleSubpage={handleSubpage} appointment={appointments.filter(appointment => appointment.donor_guid === user.data.guid).sort(compareDates)[0]}/>
+                    {appointments.length!=0 && <Appointment handleSubpage={handleSubpage} appointment={appointments.filter(appointment => appointment.donor_guid === user.data.guid).sort(compareDates)[0]}/>}
                     <div 
                         className='add-tab'
                         onClick={() => handleSubpage('schedule')}
@@ -64,16 +64,47 @@ function Appointments({handleSubpage,subpage,role}) {
                     {
                     appointments.filter(appointment => appointment.donor_guid === user.data.guid).sort(compareDates).map(appointment => <Appointment appointment={appointment}/>)
                     }
-                </>
+                </> 
+            }
 
+            {
+                (subpage === 'home' && role==="patient") && 
+                <>
+                    <Appointment handleSubpage={handleSubpage} appointment={appointments.filter(appointment => appointment.patient_guid === user.patient.guid).sort(compareDates)[0]}/>
+                    <div 
+                        className='add-tab'
+                        onClick={() => handleSubpage('schedule')}
+                        >
+                            <img src={PLusIcon}/>
+                            <h3>Schedule appointment </h3>
+                    </div>
+                </>
                 
             }
 
             {
-                ((role==='doctor' || role === 'staff') && subpage!== "home") && 
+                (subpage !== "home" && role==="patient") &&
+                <>
+                    {
+                    appointments.filter(appointment => appointment.patient_guid === user.patient.guid).sort(compareDates).map(appointment => <Appointment appointment={appointment}/>)
+                    }
+                </> 
+            }
+
+            {
+                (role === 'staff' && subpage!== "home") && 
                 <>
                     {
                     appointments.filter(appointment => appointment.hospital_guid === user.staff.hospital_guid).map(appointment => <Appointment HandleSubpage={handleSubpage} role={role} appointment={appointment}/>)
+                    }
+                </>
+            }
+
+            {
+                (role==='doctor' && subpage!== "home") && 
+                <>
+                    {
+                    appointments.filter(appointment => appointment.doctor_guid === user.data.user.guid).map(appointment => <Appointment HandleSubpage={handleSubpage} role={role} appointment={appointment}/>)
                     }
                 </>
             }
