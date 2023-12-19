@@ -91,12 +91,10 @@ class InfusionController extends Controller
                     'data' => 'amount of infusion more than blood bank amount'
                 ]);
             }
-        $infusion->update($data);
-
-
         $bloodBank->amount = $bloodBank->amount - $infusion->amount;
         $bloodBank->save();
         }
+        $infusion->update($data);
 
         return response()->json([
             'status' => 'success',

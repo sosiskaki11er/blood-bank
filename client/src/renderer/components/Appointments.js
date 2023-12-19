@@ -29,7 +29,7 @@ function Appointments({handleSubpage,subpage,role}) {
                     break;
             }
             
-        },100)
+        },700)
     },[])
 
     const compareDates = (a, b) => {

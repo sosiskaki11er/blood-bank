@@ -5,7 +5,7 @@ function Blood({blood}) {
     <div className='blood'>
         <h1>{blood.blood_type}</h1>
         <div className='blood-amount'>
-            <h3 className='font-bold'>{`${Number(blood.amount)/1000} L`}</h3>
+            <h3 className='font-bold'>{`${Number(blood.amount)} L`}</h3>
         </div>
     </div>
   )
