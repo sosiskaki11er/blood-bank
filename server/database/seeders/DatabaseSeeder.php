@@ -76,5 +76,6 @@ class DatabaseSeeder extends Seeder
             'blood_type' => 'A',
             'blood_rh' => '+',
         ]);
+
     }
 }

@@ -19,15 +19,20 @@ function Schedule({role,HandleSubpage, subpage}) {
   }
 
   useEffect(()=> {
-    setTimeout(() => {
-        Socket.request("GET","hospital","showAll","").then(data => {setHospitals(data.data);setHospital(data.data[0].guid)})
-    },200)
+    if(role === 'patient' || role === 'donor'){
+        setTimeout(() => {
+            Socket.request("GET","hospital","showAll","").then(data => {setHospitals(data.data);setHospital(data.data[0].guid)})
+        },10)
+    }
     },[])
 
   useEffect(() => {
+    if(role === 'patient' || role === 'donor'){
         setTimeout(() => {
-            Socket.request("GET","doctor","index","").then(data => {setDoctors(data.data);setDoctor(data.data[0].guid)})
-        },500)
+        Socket.request("GET","doctor","index","").then(data => {setDoctors(data.data);setDoctor(data.data[0].guid)})
+        },200)
+    }
+
     },[])
 
   const HandleSubmit = () => {

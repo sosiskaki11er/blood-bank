@@ -25,8 +25,7 @@ class DoctorFactory extends Factory
             'address' => $this->faker->address,
             'email' => $this->faker->email,
             'password' => '$2y$10$/L536tnUlvFOfKLLt6LhhODyQlXcbbjyVLGqqUQNQkSpkRBd7FDcO',
-            'description' => $this->faker->text,
-            'hospital_guid' => $this->hospital->guid,
+            'hospital_guid' => '0c259de9-7706-4cca-b9e7-4cecdaaa0025',
             'birth' => $this->faker->date(),
         ];
     }

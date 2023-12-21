@@ -7,7 +7,7 @@ class SocketService
 {
     protected $socket;
 
-    public function connect($host = '192.168.70.191', $port = 8080)
+    public function connect($host = '127.0.0.1', $port = 8080)
     {
         $this->socket = fsockopen($host, $port, $errno, $errstr, 10);
 

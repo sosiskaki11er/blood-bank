@@ -29,7 +29,7 @@ function Appointments({handleSubpage,subpage,role}) {
                     break;
             }
             
-        },700)
+        },500)
     },[])
 
     const compareDates = (a, b) => {
@@ -70,7 +70,8 @@ function Appointments({handleSubpage,subpage,role}) {
             {
                 (subpage === 'home' && role==="patient") && 
                 <>
-                    <Appointment handleSubpage={handleSubpage} appointment={appointments.filter(appointment => appointment.patient_guid === user.patient.guid).sort(compareDates)[0]}/>
+                    {appointments.length!=0 && <Appointment handleSubpage={handleSubpage} appointment={appointments.filter(appointment => appointment.patient_guid === user.patient.guid).sort(compareDates)[0]}/>}
+                    
                     <div 
                         className='add-tab'
                         onClick={() => handleSubpage('schedule')}

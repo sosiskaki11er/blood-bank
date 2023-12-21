@@ -139,8 +139,6 @@ public function update($guid): JsonResponse
 
         $patient->delete();
 
-        auth()->user()->tokens()->delete();
-
         return response()->json([
             'status' => 'success',
             'message' => 'Patient deleted'

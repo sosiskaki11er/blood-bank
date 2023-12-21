@@ -7,6 +7,7 @@
 
 #define PORT 8080
 #define MAX_CLIENTS 20
+#define BUFFER_SIZE 10240
 
 struct ClientInfo
 {
@@ -69,7 +70,7 @@ int main()
     }
 
     // Listen for incoming connections
-    if (listen(server_fd, 3) < 0)
+    if (listen(server_fd, 10) < 0)
     {
         perror("Listen failed");
         exit(EXIT_FAILURE);
@@ -151,9 +152,9 @@ void *handle_client(void *arg)
 {
     struct ClientInfo *client_info = (struct ClientInfo *)arg;
     int client_socket = client_info->client_socket;
-    char buffer[1024] = {0};
+    char buffer[BUFFER_SIZE] = {0};
     // Receive data from the client
-    while (read(client_socket, buffer, 1024) > 0)
+    while (read(client_socket, buffer, BUFFER_SIZE) > 0)
     {
         printf("Received from %s:%d (%c): %s\n", client_info->ip, client_info->port, client_info->client_type, buffer);
         pthread_mutex_lock(&mutex);
@@ -163,7 +164,7 @@ void *handle_client(void *arg)
             if (b_user_socket != -1)
             {
                 // Include the socket file descriptor of the front-end user in the message
-                char formatted_message[1024];
+                char formatted_message[BUFFER_SIZE];
                 snprintf(formatted_message, sizeof(formatted_message), "front:%d:%s", client_socket, buffer);
                 write(b_user_socket, formatted_message, strlen(formatted_message));
                 printf("Forwarded to back end user (socket %d): %s\n", client_socket, formatted_message);
@@ -173,14 +174,22 @@ void *handle_client(void *arg)
         {
             // Check if the message starts with "back:" and extract the front-end socket ID and message
             int front_socket;
+            int responce_for_error =0;
             char *message_start = strstr(buffer, "front:");
             if (message_start != NULL && sscanf(message_start, "front:%d:%[^\n]", &front_socket, buffer) == 2)
             {
                 // Reply to the specific front-end user in the expected format
-                char formatted_message[1024];
-                snprintf(formatted_message, sizeof(formatted_message), "back:%d:%s", front_socket, buffer);
-                write(front_socket, formatted_message, strlen(formatted_message));
-                printf("Replied to front end user (socket %d): %s\n", front_socket, formatted_message);
+                char formatted_message[BUFFER_SIZE];
+                if (front_socket > 9)
+                {
+                    snprintf(formatted_message, sizeof(formatted_message), "back:%d:%s", responce_for_error, buffer);
+                    write(front_socket, formatted_message, strlen(formatted_message));
+                    printf("Replied to front end user (socket %d): %s\n", front_socket, formatted_message);
+                }
+                else {
+                    snprintf(formatted_message, sizeof(formatted_message), "back:%d:%s", front_socket, buffer);
+                    write(front_socket, formatted_message, strlen(formatted_message));
+                    printf("Replied to front end user (socket %d): %s\n", front_socket, formatted_message);}
             }
         }
         pthread_mutex_unlock(&mutex);
@@ -207,10 +216,10 @@ void *handle_front_end_user(void *arg)
 {
     struct FrontEndUser *f_user = (struct FrontEndUser *)arg;
     int client_socket = f_user->client_socket;
-    char buffer[1024] = {0};
+    char buffer[BUFFER_SIZE] = {0};
 
     // Receive data from the front-end user
-    while (read(client_socket, buffer, 1024) > 0)
+    while (read(client_socket, buffer, BUFFER_SIZE) > 0)
     {
         printf("Received from front end user (socket %d): %s\n", client_socket, buffer);
 
@@ -219,7 +228,7 @@ void *handle_front_end_user(void *arg)
         if (b_user_socket != -1)
         {
             // Forward the message to the back-end user in the expected format
-            char formatted_message[1024];
+            char formatted_message[BUFFER_SIZE];
             snprintf(formatted_message, sizeof(formatted_message), "front:%d:%s", client_socket, buffer);
             printf("Forwarding to back end user: %s\n", formatted_message);
             write(b_user_socket, formatted_message, strlen(formatted_message));

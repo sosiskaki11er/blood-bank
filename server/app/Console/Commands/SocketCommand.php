@@ -67,7 +67,7 @@ class SocketCommand extends Command
                 }
                 $content = 'front:'. $front_id . ':' . $response->getBody();
 
-                echo $content;
+                echo '      ' . $content . '        ';
                 $socket->write($content);
             }
         }

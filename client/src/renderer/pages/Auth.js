@@ -30,14 +30,16 @@ function Auth() {
     const navigate = useNavigate()
 
     useEffect(()=> {
-        Socket.request("GET","hospital","showAll","").then(data => {setHospitals(data.data);setHospital(data.data[0].guid)})
-    },[])
+        if(role === 'doctor' || role === 'staff'){
+            Socket.request("GET","hospital","showAll","").then(data => {setHospitals(data.data);setHospital(data.data[0].guid)}) 
+        }
+    },[signedUp])
 
     useEffect(() => {
-        setTimeout(() => {
+        if(role === 'patient'){
             Socket.request("GET","doctor","index","").then(data => {setDoctors(data.data);setDoctor(data.data[0].guid)})
-        },1000)
-    },[])
+        }
+    },[signedUp])
 
     const HandleLogin = () => {
         if(phone && password){
